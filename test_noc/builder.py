@@ -11,7 +11,11 @@ from scripts.gen_top_tb import *
 from scripts.gen_packets import *
 from scripts.utils import *
 
-root_dir = os.path.join(os.environ.get('MTASIM_HOME'), 'test_noc')
+mtasim_root = os.environ.get('MTASIM_HOME')
+if mtasim_root is None:
+    raise EnvironmentError("The path to MTASim root directory need to be added to environment variables named MTASIM_HOME")
+
+root_dir = os.path.join(mtasim_root, 'test_noc')
 
 # parameters
 mapname = 'yolo'

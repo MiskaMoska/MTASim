@@ -16,8 +16,12 @@ from scripts.gen_tensors import *
 from scripts.gen_tensor_loader import *
 from scripts.utils import *
 
+mtasim_root = os.environ.get('MTASIM_HOME')
+if mtasim_root is None:
+    raise EnvironmentError("The path to MTASim root directory need to be added to environment variables named MTASIM_HOME")
+
 ######################################### parameters #####################################################
-root_dir = os.path.join(os.environ.get('MTASIM_HOME'), 'test_sys_behavior') #? absolute path to the current directory
+root_dir = os.path.join(mtasim_root, 'test_sys_behavior') #? absolute path to the current directory
 input_img_path = os.path.join(os.environ.get('MPTLS_HOME'), 'work', 'test.jpg') #* user-defined
 input_size = (224, 224, 3) #? (H, W, C) 
 mapname = 'resnet18' #? must be consistent with the mapname of the maptools mapping program
