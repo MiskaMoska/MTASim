@@ -1,0 +1,212 @@
+Magic 271485
+Revision Verdi3_L-2016.06-1
+
+; Window Layout <x> <y> <width> <height> <signalwidth> <valuewidth>
+viewPort 0 28 1908 398 176 126
+
+; File list:
+; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
+openDirFile -d / "" "/mnt/c/git/nvcim-nw/test_im2col_nonalign/wave.fsdb"
+
+; file time scale:
+; fileTimeScale ### s|ms|us|ns|ps
+
+; signal spacing:
+signalSpacing 5
+
+; windowTimeUnit is used for zoom, cursor & marker
+; waveform viewport range
+zoom 115444.413970 117225.963568
+cursor 116019.000000
+marker 0.000000
+
+; user define markers
+; userMarker time_pos marker_name color linestyle
+; visible top row signal index
+top 150
+; marker line index
+markerPos 155
+
+; event list
+; addEvent event_name event_expression
+; curEvent event_name
+
+
+
+COMPLEX_EVENT_BEGIN
+
+
+COMPLEX_EVENT_END
+
+
+
+; toolbar current search type
+; curSTATUS search_type
+curSTATUS ByValue
+
+
+addGroup "G1"
+activeDirFile "" "/mnt/c/git/nvcim-nw/test_im2col_nonalign/wave.fsdb"
+addSignal -h 15 /top_tb/clk1
+addSignal -h 15 -UNSIGNED -HEX -holdScope input_cnt[31:0]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope im2col_din[31:0]
+addSignal -h 15 -holdScope im2col_valid_i
+addSignal -h 15 -holdScope im2col_ready_o
+addGroup "G2"
+addSignal -h 15 /top_tb/im2col/ready_o
+addSignal -h 15 -UNSIGNED -HEX -holdScope _if_x[3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope _if_y[3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope _if_chan[6:0]
+addSignal -h 15 -holdScope win_data_ready
+addSignal -h 15 -holdScope buf_want_addr_ind
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
+addSignal -h 15 -2COMP -UDEC -holdScope buffer_cnt[31:0]
+addGroup "G3"
+addSignal -h 15 -UNSIGNED -UDEC /top_tb/im2col/buf_hold_addr[12:0]
+addSignal -h 15 -holdScope buf_hold_addr_ind
+addSignal -h 15 -holdScope ready_i_pulse
+addSignal -h 15 -holdScope vector_read_sel
+addSignal -h 15 -holdScope clk_bufw
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_done[3:0]
+addSignal -h 15 -holdScope buf_want_addr_ind
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_done[3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_is_valid[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_req[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_grt[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_is_valid[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_granted[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_is_pad[0:3]
+addSignal -h 15 -holdScope win_data_ready
+addSignal -h 15 -holdScope frame_done_bufw_pulse
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_done[3:0]
+addSignal -h 15 -holdScope buffer_state
+addSignal -h 15 -holdScope frame_done_bufr_pulse
+addSignal -h 15 -holdScope frame_done_ack_tg_s1
+addSignal -h 15 -holdScope frame_done_ack_tg_s2
+addSignal -h 15 -holdScope frame_done_ack_bufw_tg
+addSignal -h 15 -holdScope frame_done_ack_bufr_pulse
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
+addSignal -h 15 -holdScope buf_want_addr_ind
+addSignal -h 15 -holdScope buf_waddr_ind
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_want_addr[12:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_waddr[12:0]
+addSignal -h 15 -holdScope win_data_ready
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[0][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[1][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[2][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[3][12:0]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope fill_is_pad[0:3]
+addSignal -h 15 -holdScope fill_is_pad[0]
+addSignal -h 15 -holdScope fill_is_pad[1]
+addSignal -h 15 -holdScope fill_is_pad[2]
+addSignal -h 15 -holdScope fill_is_pad[3]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope fill_addr[0:3]
+addGroup "G4"
+addSignal -h 15 /top_tb/xbar/valid_i_pulse
+addSignal -h 15 -UNSIGNED -HEX -holdScope vector_reg[0:1151]
+addSignal -h 15 /top_tb/im2col/win_data_ready
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
+addGroup "G5"
+addSignal -h 15 /top_tb/sim_done
+addSignal -h 15 -UNSIGNED -HEX /top_tb/xbar/state[1:0]
+addSignal -h 15 -holdScope valid_i_pulse
+addSignal -h 15 -holdScope valid_i_delay_pulse
+addSignal -h 15 -UNSIGNED -HEX -holdScope vector_reg[0:1151]
+addSignal -h 15 -holdScope valid_o
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope vector_o[0:255]
+addGroup "G6"
+addSignal -h 15 /top_tb/im2col/clk_bufw
+addSignal -h 15 -holdScope clk_bufr
+addSignal -h 15 -holdScope buf_hold_addr_ind
+addSignal -h 15 -holdScope buf_waddr_ind
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_hold_addr[12:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_waddr[12:0]
+addSignal -h 15 -holdScope buffer_state
+addSignal -h 15 -holdScope ready_o
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_hold_addr[12:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_waddr[12:0]
+addSignal -h 15 -holdScope valid_i
+addSignal -h 15 -holdScope ready_o
+addSignal -h 15 -UNSIGNED -UDEC -holdScope if_y[3:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope if_x[3:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope if_chan[6:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope _if_x[3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope _if_y[3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope _if_chan[6:0]
+addSignal -h 15 -holdScope buf_hold_addr_ind
+addSignal -h 15 -holdScope buf_waddr_ind
+addGroup "G7"
+addSignal -h 15 -UNSIGNED -HEX /top_tb/im2col/fill_done[3:0]
+addSignal -h 15 -holdScope win_data_ready
+addSignal -h 15 -holdScope buf_want_addr_ind
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_want_addr[12:0]
+addGroup "G8"
+addSignal -h 15 -UNSIGNED -HEX /top_tb/xbar_of_x[31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope xbar_of_y[31:0]
+addSignal -h 15 -holdScope xbar_valid_o
+addSignal -h 15 -holdScope xbar_ready_i
+addGroup "G9"
+addSignal -h 15 /top_tb/im2col/ping_valid
+addSignal -h 15 /top_tb/xbar/valid_o
+addSignal -h 15 -UNSIGNED -HEX -holdScope vector_reg[0:1151]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope vector_o[0:255]
+addSignal -h 15 /top_tb/xbar_valid_o
+addSignal -h 15 /top_tb/xbar/valid_i_pulse
+addGroup "G10"
+addSignal -expanded -h 15 -UNSIGNED -HEX /top_tb/im2col/fill_addr[0:3]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[0][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[2][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[3][12:0]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope fill_is_pad[0:3]
+addSignal -h 15 -holdScope fill_is_pad[0]
+addSignal -h 15 -holdScope fill_is_pad[2]
+addSignal -h 15 -holdScope fill_is_pad[3]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope crossbar_data_o[0:3]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope crossbar_data_o[0][31:0]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope crossbar_data_o[2][31:0]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope crossbar_data_o[3][31:0]
+addGroup "G11"
+addSignal -h 15 -UNSIGNED -HEX /top_tb/im2col/fill_state[1:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope fill_winx[1][1:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope fill_winy[1][1:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope fill_ichan[1][6:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[1][12:0]
+addSignal -h 15 -holdScope fill_is_pad[1]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope crossbar_data_o[1][31:0]
+addGroup "G12"
+addSignal -expanded -h 15 -UNSIGNED -HEX /top_tb/im2col/req_to_each_arb[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope req_to_each_arb[0][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope req_to_each_arb[1][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope req_to_each_arb[2][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope req_to_each_arb[3][3:0]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope grt_from_each_arb[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope grt_from_each_arb[0][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope grt_from_each_arb[1][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope grt_from_each_arb[2][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope grt_from_each_arb[3][3:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_granted[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_bank[0:3]
+addGroup "G13"
+addSignal -h 15 -UNSIGNED -HEX /top_tb/im2col/grt_from_each_arb[0][3:0]
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[0:3]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[0][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[1][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[2][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_slice[3][12:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope buf_raddr_bank[0][12:0]
+addGroup "G14"
+addSignal -h 15 -UNSIGNED -HEX /top_tb/im2col/buf_dout[0][31:0]
+addSignal -w analog -ds pwc -h 98 -2COMP -UDEC -holdScope buffer_cnt[31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
+addSignal -h 15 -holdScope buf_hold_addr_ind
+addSignal -h 15 -holdScope buf_waddr_ind
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_waddr[12:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_hold_addr[12:0]
+addSignal -h 15 -holdScope frame_done_bufw_pulse
+addGroup "G15"
+
+; getSignalForm Scope Hierarchy Status
+; active file of getSignalForm
+
