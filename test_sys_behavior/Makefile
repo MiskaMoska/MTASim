@@ -27,5 +27,5 @@ clean:
 	rm -rf receive_pool*
 	rm -rf wave.*
 	rm -rf *.fsdb
-	rm -rf ../log/*.log
+	rm -rf *.log
 	rm -rf receive_pool*

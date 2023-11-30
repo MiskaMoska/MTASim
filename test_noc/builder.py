@@ -11,7 +11,7 @@ from scripts.gen_top_tb import *
 from scripts.gen_packets import *
 from scripts.utils import *
 
-root_dir = os.path.join(os.environ.get('MTASIM_HOME'), 'test_nw')
+root_dir = os.path.join(os.environ.get('MTASIM_HOME'), 'test_noc')
 
 # parameters
 mapname = 'yolo'

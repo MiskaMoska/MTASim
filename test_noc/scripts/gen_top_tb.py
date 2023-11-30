@@ -8,7 +8,7 @@ def gen_top_tb(root_dir, tail_tiles, flitnum):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     file_dir = os.path.join(save_dir, 'top_tb.sv')
-    state_file = os.path.join(root_dir, 'run_state')
+    state_file = os.path.join(root_dir, 'quit_state.log')
     send_pool_file = os.path.join(root_dir, 'send_pool.txt')
     receive_pool_files = []
     for i in nf:
