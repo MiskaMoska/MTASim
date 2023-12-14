@@ -24,23 +24,9 @@ module conv_im2col #(
     parameter int ofsize_y = 0,
 
     /* ------------------------------------------------------------------------- 
-     This is the configuration information about the xbar 
+        This is the configuration information about the xbar 
     ------------------------------------------------------------------------- */
-    parameter int xbar_num_ichan = 0,    
-
-    /* ------------------------------------------------------------------------- 
-     This is the configuration information about each position in the i-vector 
-    ------------------------------------------------------------------------- */
-    // where [`CBN] is for each bank slice of the i-vector, and [`XH/`CBN] is for each 
-    // relative position inside the bank slice.
-
-    // Note that vcfg_rela_ichan is the relative input channel index that the position is responsible
-    // for, for example, if the current xbar is responsible for input channel slice (256, 512), then the 
-    // vcfg_rela_ichan at the second position is 1 rather than 257, because it is set relative to 256
-
-    // Note that the configuration information cannot be implemented in real hardware, because they can
-    // induce high hardware cost. The configuration information is only used for functionality verification,
-    // in real hardware implementation, it should be replaced by hardware-friendly logic structures.
+    parameter int xbar_num_ichan = 0,
 
     parameter bit vcfg_valid [`CBN] [`XH/`CBN] = '{(`CBN){'{(`XH/`CBN){1'b0}}}}, // indicate whether the current position is a valid position, that is, been mapped or not
     parameter int vcfg_winx [`CBN] [`XH/`CBN] = '{(`CBN){'{(`XH/`CBN){0}}}}, // kernel window x position
@@ -60,6 +46,25 @@ module conv_im2col #(
     output    logic                     valid_o_tg,
     input     logic                     ready_i_tg
 );
+
+/* --------------------------------------------------------------------------- 
+    This is the configuration information about each position in the i-vector 
+--------------------------------------------------------------------------- */
+// where [`CBN] is for each bank slice of the i-vector, and [`XH/`CBN] is for each 
+// relative position inside the bank slice.
+
+// Note that vcfg_rela_ichan is the relative input channel index that the position is responsible
+// for, for example, if the current xbar is responsible for input channel slice (256, 512), then the 
+// vcfg_rela_ichan at the second position is 1 rather than 257, because it is set relative to 256
+
+// Note that the configuration information cannot be implemented in real hardware, because they can
+// induce high hardware cost. The configuration information is only used for functionality verification,
+// in real hardware implementation, it should be replaced by hardware-friendly logic structures.
+
+// bit vcfg_valid [`CBN] [`XH/`CBN]; // indicate whether the current position is a valid position, that is, been mapped or not
+// int vcfg_winx [`CBN] [`XH/`CBN]; // kernel window x position
+// int vcfg_winy [`CBN] [`XH/`CBN]; // kernel window y position
+// int vcfg_rela_ichan [`CBN] [`XH/`CBN]; // relative input channel index
 
 logic [`CBN-1 : 0] buf_wen;
 logic [$clog2(`CBD)+$clog2(`CBN)-1 : 0] buf_waddr;
@@ -100,8 +105,8 @@ logic frame_done_bufr_pulse;
 logic frame_done_bufr_tg;
 logic frame_done_tg_s1, frame_done_tg_s2;
 logic frame_done_bufw_pulse;
-logic frame_done_ack_bufw_tg;
-logic frame_done_ack_tg_s1, frame_done_ack_tg_s2;
+logic frame_done_bufw_level;
+logic frame_done_ack_tg, frame_done_ack_tg_s1, frame_done_ack_tg_s2;
 logic frame_done_ack_bufr_pulse;
 
 logic [`QW-1 : 0] crossbar_data_o [`CBN];
@@ -142,6 +147,7 @@ localparam WAIT = 0;
 localparam FILL = 1;
 localparam SUSPEND = 2;
 
+logic now_is_valid, now_is_valid_s1;
 
 /* Buffer Banks */
 genvar bank;
@@ -192,9 +198,16 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
     end
 end
 
+// why use > rather than >=? because due to the write address counting mechanism, the data at buf_waddr has 
+// not been written to the buffer, so the data in the window is actually not prepared well when buf_waddr == buf_want_addr,
+// so we should use > rather than >=. However, the buf_waddr cannot exceed buf_want_addr at the last data of the input
+// feature map, so we use another trick to handle this problem: we make the write address plus one when all data has been
+// written to the buffer and the buffer_state turns to BUSY
+// And there are other means to achieve this, we can use:
+// win_data_ready = (buf_waddr_s1 == buf_want_addr) & valid_i & ready_o | (buf_waddr_s1 > buf_want_addr);
 always_comb begin
     if(buf_waddr_ind_s1 == buf_want_addr_ind) begin
-        win_data_ready = buf_waddr_s1 >= buf_want_addr;
+        win_data_ready = buf_waddr_s1 > buf_want_addr;
     end else begin
         win_data_ready = buf_want_addr > buf_waddr_s1;
     end
@@ -228,7 +241,7 @@ always_comb begin
             end
         end
         BUSY: begin
-            if(frame_done_bufw_pulse) begin
+            if(frame_done_bufw_level) begin
                 nxt_buffer_state = OKAY;
             end else begin
                 nxt_buffer_state = buffer_state;
@@ -323,10 +336,19 @@ end
 // written to ping-pong vector registers, and the current frame can be released, the it sends a frame_done_bufr_tg
 // signal to bufw clock domain and the fill_state FSM turns to SUSPEND to wait for the buffer to be released.
 
-// when bufw clock domain detects the frame_done_bufw_pulse HIGH, the if_x, if_y, if_chan counters
+// threre is a special situation where the frame_done signal is generated earlier than all input data is written to
+// the buffer, this can happen when the conv_kernel_size is 1x1 and stride is larger than 1, where not all input data 
+// is needed to calculate the output data, so the convolution may ends earlier than buffer writing.
+
+// to handle this problem, we stipulate that whenever the frame_done signal is generated in bufr clock domain,
+// the buffer_state FSM in bufw clock domain must first wait until all data is written into the buffer, then it 
+// turns to BUSY state. to hold the frame_done signal when buffer writing is not completed, we set another signal:
+// frame_done_bufw_level as a sampling register of frame_done_bufw_pulse.
+
+// when bufw clock domain detects the frame_done_bufw_level HIGH, the if_x, if_y, if_chan counters
 // are reset and the buffer_state FSM turns from BUSY to OKAY.
 
-// when bufr clock domain detects a fram_done_ack_bufr_pulse, it means the buffer has been released for the curren
+// when bufr clock domain detects a frame_done_ack_bufr_pulse, it means the buffer has been released for the curren
 // frame, and the fill_state FSM returns from SUSPEND to WAIT, ready for filling the first vector of the next frame.
 
 assign frame_done_bufr_pulse = ((of_x == ofsize_x-1) & (of_y == ofsize_y-1) & (& fill_done));
@@ -353,10 +375,23 @@ assign frame_done_bufw_pulse = frame_done_tg_s1 ^ frame_done_tg_s2;
 
 always @(posedge clk_bufw or negedge rstn_bufw) begin
     if(~rstn_bufw) begin
-        frame_done_ack_bufw_tg <= 0;
+        frame_done_bufw_level <= 0;
     end else begin
-        if(frame_done_bufw_pulse)
-            frame_done_ack_bufw_tg <= ~frame_done_ack_bufw_tg;
+        if((buffer_state == BUSY) & frame_done_bufw_level) begin
+            frame_done_bufw_level <= 0;
+        end else if(frame_done_bufw_pulse) begin
+            frame_done_bufw_level <= 1;
+        end
+    end
+end
+
+always @(posedge clk_bufw or negedge rstn_bufw) begin
+    if(~rstn_bufw) begin
+        frame_done_ack_tg <= 0;
+    end else begin
+        if((buffer_state == BUSY) & frame_done_bufw_level) begin
+            frame_done_ack_tg <= ~frame_done_ack_tg;
+        end
     end
 end
 
@@ -365,7 +400,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
         frame_done_ack_tg_s1 <= 0;
         frame_done_ack_tg_s2 <= 0;
     end else begin
-        frame_done_ack_tg_s1 <= frame_done_ack_bufw_tg;
+        frame_done_ack_tg_s1 <= frame_done_ack_tg;
         frame_done_ack_tg_s2 <= frame_done_ack_tg_s1;
     end
 end
@@ -380,7 +415,7 @@ always @(posedge clk_bufw or negedge rstn_bufw) begin
         if_y <= 0;
         if_chan <= 0;
     end else begin
-        if(frame_done_bufw_pulse) begin
+        if((buffer_state == BUSY) & frame_done_bufw_level) begin
             if_x <= 0;
             if_y <= 0;
             if_chan <= 0;
@@ -441,17 +476,20 @@ end
 
 
 /* Buffer Write Address Calculation */
-assign buf_waddr = (_if_chan + (_if_x + (_if_y * ifsize_x)) * 
-                    xbar_num_ichan) % (`CBD * `CBN);
-
-assign buf_waddr_ind = ((_if_chan + (_if_x + (_if_y * ifsize_x)) * 
-                        xbar_num_ichan) / (`CBD * `CBN)) % 2 == 1;
+int real_waddr;
+always_comb begin
+    real_waddr = (_if_chan + (_if_x + (_if_y * ifsize_x)) * xbar_num_ichan);
+    if(buffer_state == BUSY) begin
+        real_waddr ++; // when write done, write address plus one to exceed want_addr to ensure win_data_ready
+    end
+    buf_waddr = real_waddr % (`CBD * `CBN);
+    buf_waddr_ind = (real_waddr / (`CBD * `CBN)) % 2 == 1;
+end
 
 
 /* Holding Address Calculation */
-int x=0;
-int y=0;
 int temp_hold_addr;
+bit keep_hold;
 int temp_hold_x, temp_hold_y;
 always @(posedge clk_bufr or negedge rstn_bufr) begin
     if(~rstn_bufr) begin
@@ -464,31 +502,75 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
         end else if(& fill_done) begin
             temp_hold_x = nxt_of_x * stride_x - ifpads_l;
             temp_hold_y = nxt_of_y * stride_y - ifpads_u;
+            keep_hold = 0;
             if(nxt_of_y * stride_y < ifpads_u) begin // reach up pad
-                temp_hold_y = 0;
+                keep_hold = 1;
             end
-            if(nxt_of_x * stride_x < ifpads_l) begin // reach left pad
+            else if(nxt_of_x * stride_x < ifpads_l) begin // not up pad but reach left pad
                 temp_hold_x = 0;
             end
             if((nxt_of_y * stride_y >= ifpads_u + ifsize_y) || 
                 (nxt_of_x * stride_x >= ifpads_l + ifsize_x)) begin // reach down pad or right pad, illegal
-                $display("reach right or down padding when calculation hold_addr at tile (%0d, %0d), of_x: %0d, of_y: %0d", x, y, of_x, of_y);
+                // $display("convolution reach right or down padding when calculating hold_addr at tile (%0d, %0d), of_x: %0d, of_y: %0d", x, y, of_x, of_y);
                 $finish;
             end
-            temp_hold_addr = ((temp_hold_x + temp_hold_y * ifsize_x) * xbar_num_ichan);
-            buf_hold_addr <= temp_hold_addr % (`CBD * `CBN);
-            buf_hold_addr_ind <= (temp_hold_addr / (`CBD * `CBN)) % 2 == 1;
+
+            if(keep_hold) begin
+                buf_hold_addr <= buf_hold_addr;
+                buf_hold_addr_ind <= buf_hold_addr_ind;
+            end else begin
+                temp_hold_addr = ((temp_hold_x + temp_hold_y * ifsize_x) * xbar_num_ichan);
+                buf_hold_addr <= temp_hold_addr % (`CBD * `CBN);
+                buf_hold_addr_ind <= ((temp_hold_addr / (`CBD * `CBN)) % 2 == 1);
+            end
+
         end
     end
 end
 
+// always @(posedge clk_bufr or negedge rstn_bufr) begin
+//     if(~rstn_bufr) begin
+//         buf_hold_addr <= 0;
+//         buf_hold_addr_ind <= 0;
+//     end else begin
+//         if(frame_done_bufr_pulse) begin
+//             buf_hold_addr <= 0;
+//             buf_hold_addr_ind <= 0;
+//         end else if(& fill_done) begin
+//             if((nxt_of_x * stride_x < ifpads_l) || 
+//             (nxt_of_x * stride_x >= ifpads_l + ifsize_x) || 
+//             (nxt_of_y * stride_y < ifpads_u) ||
+//             (nxt_of_y * stride_y >= ifpads_u + ifsize_y)) begin 
+//                 // next window base is padding, keep the holding address uchanged
+//                 buf_hold_addr <= buf_hold_addr;
+//                 buf_hold_addr_ind <= buf_hold_addr_ind;
+//             end else begin
+//                 // next window base is not padding, update the holding address to the base address
+//                 buf_hold_addr <= (((nxt_of_x * stride_x - ifpads_l) + 
+//                                     (nxt_of_y * stride_y - ifpads_u) * ifsize_x) * 
+//                                     xbar_num_ichan) % (`CBD * `CBN);
+//                 buf_hold_addr_ind <= ((((nxt_of_x * stride_x - ifpads_l) + 
+//                                     (nxt_of_y * stride_y - ifpads_u) * ifsize_x) * 
+//                                     xbar_num_ichan) / (`CBD * `CBN)) % 2 == 1;
+//             end
+//         end
+//     end
+// end
+
+
 /* Wanting Address Calculation */
+// here is a special problem that only occurs when kernel size is smaller than stride, more specifically, in 1x1 convolution.
+// if we calculate the buf_want_addr by the kernel size, when the buf_hold_addr is updated, it may exceed buf_waddr, which is strictly not permitted.
+// to handle this problem, whe calculate the buf_want_addr by the maximum number in kernel size and stride to ensure that the 
+// buf_hold_addr will never exceed buf_waddr. this will induce some performance costs because some oppotunities to produce convolution
+// results are lost when the needed data are prepared in conv_buffer but a line fill cannot be started immediately, 
+// but it guarantees calculation safety.
+int t1, t2, t3, t4, t5;
 always_comb begin
-    int t1, t2, t3, t4, t5;
-    t1 = of_x * stride_x + kernel_x - 1;
+    t1 = of_x * stride_x + $max(kernel_x, stride_x) - 1;
     t2 = ifpads_l + ifsize_x - 1;
     t3 = $min(t1, t2) - ifpads_l;
-    t1 = of_y * stride_y + kernel_y - 1;
+    t1 = of_y * stride_y + $max(kernel_y, stride_y) - 1;
     t2 = ifpads_u + ifsize_y - 1;
     t4 = $min(t1, t2) - ifpads_u;
     t5 = (t3 + t4 * ifsize_x + 1) * xbar_num_ichan - 1; // must minus one!!
@@ -537,6 +619,13 @@ generate
     end
 endgenerate
 
+logic vector_write_ena[`CBN];
+generate
+    for(bank=0; bank<`CBN; bank=bank+1) begin
+        assign vector_write_ena[bank] = (fill_state == FILL) & (~fill_done[bank]) & fill_is_valid[bank] & (| fill_sel[bank]) & (fill_granted[bank] | fill_is_pad[bank]);
+    end
+endgenerate
+
 
 /* Vector Writing Control */
 always @(posedge clk_bufr or negedge rstn_bufr) begin
@@ -548,14 +637,16 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
             end
         end
     end else begin
-        for(int i=0; i<`CBN; i=i+1) begin
-            for(int j=0; j<`XH/`CBN; j=j+1) begin
-                if((~(& fill_done)) & fill_is_valid[i] & fill_sel[i][j] & 
-                    (fill_granted[i] | fill_is_pad[i])) begin
-                    if(vector_write_sel) begin
-                        pong_vector[i][j] <= crossbar_data_o[i];
-                    end else begin
-                        ping_vector[i][j] <= crossbar_data_o[i];
+        if(fill_state == FILL) begin
+            for(int i=0; i<`CBN; i=i+1) begin
+                for(int j=0; j<`XH/`CBN; j=j+1) begin
+                    if((~fill_done[i]) & fill_is_valid[i] & fill_sel[i][j] & 
+                        (fill_granted[i] | fill_is_pad[i])) begin
+                        if(vector_write_sel) begin
+                            pong_vector[i][j] <= fill_is_pad[i] ? 0 : crossbar_data_o[i];
+                        end else begin
+                            ping_vector[i][j] <= fill_is_pad[i] ? 0 : crossbar_data_o[i];
+                        end
                     end
                 end
             end
@@ -576,7 +667,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
             end else begin
                 ping_valid <= 1;
             end
-        end else if(now_is_ready) begin
+        end else if(now_is_valid & now_is_ready) begin
             if(vector_read_sel) begin
                 pong_valid <= 0;
             end else begin
@@ -602,7 +693,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
     if(~rstn_bufr) begin
         vector_read_sel <= 0;
     end else begin
-        if(now_is_ready) begin
+        if(now_is_valid & now_is_ready) begin
             vector_read_sel <= ~vector_read_sel;
         end
     end
@@ -613,8 +704,8 @@ end
 always @(posedge clk_bufr or negedge rstn_bufr) begin
     if(~rstn_bufr) begin
         for(int i=0; i<`CBN; i=i+1) begin
-            fill_addr[i] <= 0;
-            fill_sel[i] <= 1;
+            fill_addr[i] <= 'b0;
+            fill_sel[i] <= 'b1;
         end
     end else begin
         for(int i=0; i<`CBN; i=i+1) begin
@@ -660,7 +751,7 @@ generate
         // when the current slice is on a invalid unit, it shouldn't send bank request
         // when the current slice fill done, it cannot send bank request anymore
         // when the current requesting activation is from padding, it shouldn't send bank request
-        assign fill_req[slice] = (~fill_is_valid[slice]) | fill_done[slice] | fill_is_pad[slice] ? 0 : (1 << buf_raddr_slice[slice][$clog2(`CBN)-1:0]); 
+        assign fill_req[slice] = (fill_state != FILL) | (~fill_is_valid[slice]) | fill_done[slice] | fill_is_pad[slice] ? 0 : (1 << buf_raddr_slice[slice][$clog2(`CBN)-1:0]); 
         assign buf_raddr_slice[slice] = (fill_ichan[slice] + ((of_x * stride_x + fill_winx[slice] - ifpads_l) + 
                                         (of_y * stride_y + fill_winy[slice] - ifpads_u) * ifsize_x) * 
                                         xbar_num_ichan) % (`CBD * `CBN);
@@ -725,7 +816,7 @@ generate
 endgenerate
 
 generate
-    for(slice=0; slice<`CBN; slice=slice+1) begin: DOUT_MUX_BANK
+    for(slice=0; slice<`CBN; slice=slice+1) begin: DOUT_MUX_SLICE
         mux #(
             .DWIDTH                         (`QW),
             .WAYS                           (`CBN)
@@ -754,7 +845,6 @@ end
 
 assign ready_i_pulse = ready_i_tg_s3 ^ ready_i_tg_s2;
 
-logic now_is_valid, now_is_valid_s1;
 assign now_is_valid = vector_read_sel ? pong_valid : ping_valid;
 
 always @(posedge clk_bufr or negedge rstn_bufr) begin
@@ -795,7 +885,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
         valid_o_tg <= 0;
         for(int i=0; i<`CBN; i=i+1) begin
             for(int j=0; j<`XH/`CBN; j=j+1) begin
-                mcp_vector[i][j] = 0;
+                mcp_vector[i][j] <= 0;
             end
         end
     end else begin
@@ -816,11 +906,16 @@ always_comb begin
 end
 
 /* For Debugging */
+int flog;
 initial begin
+    // flog = $fopen($sformatf("./log/im2col_tile_%0d_%0d.log", x, y), "w");
     forever begin
         @(posedge clk_bufr)
-        if(& fill_done)
-        $display("Vector fill done, now of_x: %0d, now of_y %0d", of_x, of_y);
+        if(& fill_done) begin
+            $display("time %0t: Vector fill done, now of_x: %0d, now of_y %0d", $time, of_x, of_y);
+            // $fwrite(flog, "time %0t: Vector fill done, now of_x: %0d, now of_y %0d\n", $time, of_x, of_y);
+            // $fflush(flog);
+        end
     end
 end
 

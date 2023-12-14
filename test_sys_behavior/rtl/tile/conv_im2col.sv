@@ -27,7 +27,7 @@ module conv_im2col #(
     parameter int ofsize_y = 0,
 
     /* ------------------------------------------------------------------------- 
-     This is the configuration information about the xbar 
+        This is the configuration information about the xbar 
     ------------------------------------------------------------------------- */
     parameter int xbar_num_ichan = 0    
 )(
@@ -145,6 +145,7 @@ localparam WAIT = 0;
 localparam FILL = 1;
 localparam SUSPEND = 2;
 
+logic now_is_valid, now_is_valid_s1;
 
 /* Buffer Banks */
 genvar bank;
@@ -195,9 +196,16 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
     end
 end
 
+// why use > rather than >=? because due to the write address counting mechanism, the data at buf_waddr has 
+// not been written to the buffer, so the data in the window is actually not prepared well when buf_waddr == buf_want_addr,
+// so we should use > rather than >=. However, the buf_waddr cannot exceed buf_want_addr at the last data of the input
+// feature map, so we use another trick to handle this problem: we make the write address plus one when all data has been
+// written to the buffer and the buffer_state turns to BUSY
+// And there are other means to achieve this, we can use:
+// win_data_ready = (buf_waddr_s1 == buf_want_addr) & valid_i & ready_o | (buf_waddr_s1 > buf_want_addr);
 always_comb begin
     if(buf_waddr_ind_s1 == buf_want_addr_ind) begin
-        win_data_ready = buf_waddr_s1 >= buf_want_addr;
+        win_data_ready = buf_waddr_s1 > buf_want_addr;
     end else begin
         win_data_ready = buf_want_addr > buf_waddr_s1;
     end
@@ -466,11 +474,15 @@ end
 
 
 /* Buffer Write Address Calculation */
-assign buf_waddr = (_if_chan + (_if_x + (_if_y * ifsize_x)) * 
-                    xbar_num_ichan) % (`CBD * `CBN);
-
-assign buf_waddr_ind = ((_if_chan + (_if_x + (_if_y * ifsize_x)) * 
-                        xbar_num_ichan) / (`CBD * `CBN)) % 2 == 1;
+int real_waddr;
+always_comb begin
+    real_waddr = (_if_chan + (_if_x + (_if_y * ifsize_x)) * xbar_num_ichan);
+    if(buffer_state == BUSY) begin
+        real_waddr ++; // when write done, write address plus one to exceed want_addr to ensure win_data_ready
+    end
+    buf_waddr = real_waddr % (`CBD * `CBN);
+    buf_waddr_ind = (real_waddr / (`CBD * `CBN)) % 2 == 1;
+end
 
 
 /* Holding Address Calculation */
@@ -605,6 +617,13 @@ generate
     end
 endgenerate
 
+logic vector_write_ena[`CBN];
+generate
+    for(bank=0; bank<`CBN; bank=bank+1) begin
+        assign vector_write_ena[bank] = (fill_state == FILL) & (~fill_done[bank]) & fill_is_valid[bank] & (| fill_sel[bank]) & (fill_granted[bank] | fill_is_pad[bank]);
+    end
+endgenerate
+
 
 /* Vector Writing Control */
 always @(posedge clk_bufr or negedge rstn_bufr) begin
@@ -616,14 +635,16 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
             end
         end
     end else begin
-        for(int i=0; i<`CBN; i=i+1) begin
-            for(int j=0; j<`XH/`CBN; j=j+1) begin
-                if((~(& fill_done)) & fill_is_valid[i] & fill_sel[i][j] & 
-                    (fill_granted[i] | fill_is_pad[i])) begin
-                    if(vector_write_sel) begin
-                        pong_vector[i][j] <= crossbar_data_o[i];
-                    end else begin
-                        ping_vector[i][j] <= crossbar_data_o[i];
+        if(fill_state == FILL) begin
+            for(int i=0; i<`CBN; i=i+1) begin
+                for(int j=0; j<`XH/`CBN; j=j+1) begin
+                    if((~fill_done[i]) & fill_is_valid[i] & fill_sel[i][j] & 
+                        (fill_granted[i] | fill_is_pad[i])) begin
+                        if(vector_write_sel) begin
+                            pong_vector[i][j] <= fill_is_pad[i] ? 0 : crossbar_data_o[i];
+                        end else begin
+                            ping_vector[i][j] <= fill_is_pad[i] ? 0 : crossbar_data_o[i];
+                        end
                     end
                 end
             end
@@ -644,7 +665,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
             end else begin
                 ping_valid <= 1;
             end
-        end else if(now_is_ready) begin
+        end else if(now_is_valid & now_is_ready) begin
             if(vector_read_sel) begin
                 pong_valid <= 0;
             end else begin
@@ -670,7 +691,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
     if(~rstn_bufr) begin
         vector_read_sel <= 0;
     end else begin
-        if(now_is_ready) begin
+        if(now_is_valid & now_is_ready) begin
             vector_read_sel <= ~vector_read_sel;
         end
     end
@@ -681,8 +702,8 @@ end
 always @(posedge clk_bufr or negedge rstn_bufr) begin
     if(~rstn_bufr) begin
         for(int i=0; i<`CBN; i=i+1) begin
-            fill_addr[i] <= 0;
-            fill_sel[i] <= 1;
+            fill_addr[i] <= 'b0;
+            fill_sel[i] <= 'b1;
         end
     end else begin
         for(int i=0; i<`CBN; i=i+1) begin
@@ -728,7 +749,7 @@ generate
         // when the current slice is on a invalid unit, it shouldn't send bank request
         // when the current slice fill done, it cannot send bank request anymore
         // when the current requesting activation is from padding, it shouldn't send bank request
-        assign fill_req[slice] = (~fill_is_valid[slice]) | fill_done[slice] | fill_is_pad[slice] ? 0 : (1 << buf_raddr_slice[slice][$clog2(`CBN)-1:0]); 
+        assign fill_req[slice] = (fill_state != FILL) | (~fill_is_valid[slice]) | fill_done[slice] | fill_is_pad[slice] ? 0 : (1 << buf_raddr_slice[slice][$clog2(`CBN)-1:0]); 
         assign buf_raddr_slice[slice] = (fill_ichan[slice] + ((of_x * stride_x + fill_winx[slice] - ifpads_l) + 
                                         (of_y * stride_y + fill_winy[slice] - ifpads_u) * ifsize_x) * 
                                         xbar_num_ichan) % (`CBD * `CBN);
@@ -793,7 +814,7 @@ generate
 endgenerate
 
 generate
-    for(slice=0; slice<`CBN; slice=slice+1) begin: DOUT_MUX_BANK
+    for(slice=0; slice<`CBN; slice=slice+1) begin: DOUT_MUX_SLICE
         mux #(
             .DWIDTH                         (`QW),
             .WAYS                           (`CBN)
@@ -822,7 +843,6 @@ end
 
 assign ready_i_pulse = ready_i_tg_s3 ^ ready_i_tg_s2;
 
-logic now_is_valid, now_is_valid_s1;
 assign now_is_valid = vector_read_sel ? pong_valid : ping_valid;
 
 always @(posedge clk_bufr or negedge rstn_bufr) begin
@@ -863,7 +883,7 @@ always @(posedge clk_bufr or negedge rstn_bufr) begin
         valid_o_tg <= 0;
         for(int i=0; i<`CBN; i=i+1) begin
             for(int j=0; j<`XH/`CBN; j=j+1) begin
-                mcp_vector[i][j] = 0;
+                mcp_vector[i][j] <= 0;
             end
         end
     end else begin
@@ -894,9 +914,12 @@ initial begin
                 $display("time %0t: Vector fill done, now of_x: %0d, now of_y %0d", $time, of_x, of_y);
             end
             $fwrite(flog, "time %0t: Vector fill done, now of_x: %0d, now of_y %0d\n", $time, of_x, of_y);
-            $fflush(flog);
         end
     end
+end
+
+final begin
+    $fclose(flog);
 end
 
 endmodule

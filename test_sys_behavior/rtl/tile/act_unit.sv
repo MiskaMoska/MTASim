@@ -18,7 +18,7 @@ generate
         for(c=0; c<`XW; c=c+1) begin
             always_comb begin
                 data_o[c] = $shortrealtobits(
-                    $max($bitstoshortreal(data_i), 0)
+                    $max($bitstoshortreal(data_i[c]), 0)
                 );
             end
         end

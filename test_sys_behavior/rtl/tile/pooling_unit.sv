@@ -47,7 +47,7 @@ if(has_pool) begin: ACTIVE_POOLING
     logic [$clog2(`PBD)-1 : 0] buf_raddr;
     logic [$clog2(`PBD)-1 : 0] buf_hold_addr;
     logic [$clog2(`PBD)-1 : 0] buf_want_addr;
-    logic buf_waadr_ind, buf_hold_addr_ind, buf_want_addr_ind;
+    logic buf_waddr_ind, buf_hold_addr_ind, buf_want_addr_ind;
 
     logic [$clog2(ifsize_x)-1 : 0] if_x;
     logic [$clog2(ifsize_y)-1 : 0] if_y;
@@ -235,8 +235,15 @@ if(has_pool) begin: ACTIVE_POOLING
     assign win_done = win_end & win_cnt_en;
 
     /* Buffer Write Address Calculation */
-    assign buf_waddr = (_if_x + (_if_y * ifsize_x)) % `PBD;
-    assign buf_waddr_ind = ((_if_x + (_if_y * ifsize_x)) / `PBD) % 2 == 1;
+    int real_waddr;
+    always_comb begin
+        real_waddr = (_if_x + (_if_y * ifsize_x));
+        if(buffer_state == BUSY) begin
+            real_waddr ++; // when write done, write address plus one to exceed want_addr to ensure win_data_ready
+        end
+        buf_waddr = real_waddr % `PBD;
+        buf_waddr_ind = (real_waddr / `PBD) % 2 == 1;
+    end
 
 
     /* Holding Address Calculation */
@@ -346,7 +353,7 @@ if(has_pool) begin: ACTIVE_POOLING
     /* Window Data Ready Judging */
     always_comb begin
         if(buf_waddr_ind == buf_want_addr_ind) begin
-            win_data_ready = buf_waddr >= buf_want_addr;
+            win_data_ready = buf_waddr > buf_want_addr;
         end else begin
             win_data_ready = buf_want_addr > buf_waddr;
         end

@@ -1,0 +1,79 @@
+0 
+23
+-Mamsrun=
+-Masflags=
+-Mcc=gcc-4.8
+-Mcfl= -pipe -fPIC -O -I/eda/vcs/include
+-Mcplusplus=g++-4.8
+-Mcrt0=
+-Mcrtn=
+-Mcsrc=
+-Mexternalobj=
+-Mldflags= -Wl,-no-as-needed -rdynamic
+-Mobjects= /eda/vcs/linux64/lib/libvirsim.so /eda/vcs/linux64/lib/liberrorinf.so /eda/vcs/linux64/lib/libsnpsmalloc.so
+-Mout=simv
+-Msaverestoreobj=/eda/vcs/linux64/lib/vcs_save_restore_new.o
+-Msyslibs=-ldl
+-Mvcsaceobjs=
+-Mxcflags= -pipe -fPIC -I/eda/vcs/include
+-Xvcs_run_simv=1
+-full64
+-gen_obj
+-picarchive
+-sverilog
+/eda/vcs/linux64/bin/vcs1
+test.sv
+44
+tsinghua=https://pypi.tuna.tsinghua.edu.cn/simple
+sysc_uni_pwd=/mnt/c/git/mtasim/test_sys_behavior/scripts
+no_proxy=192.168.*,172.31.*,172.30.*,172.29.*,172.28.*,172.27.*,172.26.*,172.25.*,172.24.*,172.23.*,172.22.*,172.21.*,172.20.*,172.19.*,172.18.*,172.17.*,172.16.*,10.*,127.*,localhost,<local>
+https_proxy=http://127.0.0.1:7890
+http_proxy=http://127.0.0.1:7890
+XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir
+XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+WT_SESSION=d812b5c4-a6b2-4695-a58f-a47dc8152f8a
+WT_PROFILE_ID={4d355406-482f-4574-bd7e-4c1581a0d2b4}
+WSL_INTEROP=/run/WSL/8_interop
+WSL_DISTRO_NAME=Ubuntu-20.04
+WSLENV=WT_SESSION:WT_PROFILE_ID:
+WSL2_GUI_APPS_ENABLED=1
+WAYLAND_DISPLAY=wayland-0
+VMR_MODE_FLAG=64
+VERDI_HOME=/eda/verdi
+VCS_MX_HOME_INTERNAL=1
+VCS_MODE_FLAG=64
+VCS_HOME=/eda/vcs
+VCS_DEPTH=0
+VCS_ARG_ADDED_FOR_TMP=1
+VCS_ARCH_OVERRIDE=linux
+VCS_ARCH=linux64
+UNAME=/bin/uname
+TOOL_HOME=/eda/vcs/linux64
+SYNOPSYS=/eda/dc
+SCRNAME=vcs
+SCRIPT_NAME=vcs
+PULSE_SERVER=unix:/mnt/wslg/PulseServer
+OVA_UUM=0
+NRA_HOME=/mnt/f/git/NoCRouterArch
+NO_PROXY=192.168.*,172.31.*,172.30.*,172.29.*,172.28.*,172.27.*,172.26.*,172.25.*,172.24.*,172.23.*,172.22.*,172.21.*,172.20.*,172.19.*,172.18.*,172.17.*,172.16.*,10.*,127.*,localhost,<local>
+NLRT_HOME=/mnt/f/git/NLRT
+NAME=DESKTOP-H9DJS7N
+MTASIM_HOME=/mnt/c/git/mtasim
+MPTLS_HOME=/mnt/c/git/maptools
+LESSOPEN=| /usr/bin/lesspipe %s
+LESSCLOSE=/usr/bin/lesspipe %s %s
+LC_ALL=C
+JOB_HOME=/mnt/f/git/ic_design
+HTTP_PROXY=http://127.0.0.1:7890
+HTTPS_PROXY=http://127.0.0.1:7890
+HOSTTYPE=x86_64
+DC_HOME=/eda/dc
+0
+1
+1702368530 test.sv
+4
+0 
+1464147802 /eda/vcs/linux64/lib/libvirsim.so
+1464147272 /eda/vcs/linux64/lib/liberrorinf.so
+1464147248 /eda/vcs/linux64/lib/libsnpsmalloc.so
+1702368542 simv.daidir

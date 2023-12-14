@@ -47,7 +47,7 @@ def get_tile_bias_from_layer_bias(bias: torch.Tensor, config: TileConfig) -> tor
 
     s_ochan, d_ochan = ocfg
     tile_bias = bias[s_ochan : d_ochan]
-    tile_bias = F.pad(bias, (0, xbar_w-bias.size(0)))
+    tile_bias = F.pad(tile_bias, (0, xbar_w-tile_bias.size(0)))
     return tile_bias
 
 
@@ -142,10 +142,7 @@ def gen_tensor_bin_files(
         write_2dtensor_to_bin(vcfg_valid, valid_path, format='B')
         write_2dtensor_to_bin(vcfg_winx, winx_path, format='B')
         write_2dtensor_to_bin(vcfg_winy, winy_path, format='B')
-        write_2dtensor_to_bin(vcfg_rela_ichan, rela_ichan_path, format='>B')
+        write_2dtensor_to_bin(vcfg_rela_ichan, rela_ichan_path, format='>I')
 
         print(f"line config has been written to {valid_path}")
-
-    
-            
 

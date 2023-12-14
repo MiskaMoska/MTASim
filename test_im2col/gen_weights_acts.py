@@ -15,4 +15,3 @@ with open("activation.pkl", 'wb') as f:
 
 with open("weights.pkl", 'wb') as f:
     pickle.dump(weights, f)
-

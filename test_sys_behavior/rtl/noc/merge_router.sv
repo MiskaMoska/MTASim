@@ -131,7 +131,7 @@ syn_fifo #(
 shortreal data_i_sr[5];
 shortreal sum;
 
-always@(*) begin
+always_comb begin
     `ifdef CALC_ON
     for(int i=0; i<5; i++) begin
         if(input_mask[i]) data_i_sr[i] = $bitstoshortreal(data_i_fifo[i]);

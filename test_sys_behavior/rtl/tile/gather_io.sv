@@ -69,7 +69,7 @@ always @(posedge clk_tl or negedge rstn_tl) begin
             tl_data_o_reg[i] <= 0;
         end
     end else begin
-        if((icnt != valid_chans - 1) & ibuf_empty) begin
+        if((icnt != valid_chans - 1) & (~ibuf_empty)) begin
             tl_data_o_reg[icnt] <= ibuf_dout;
         end
     end

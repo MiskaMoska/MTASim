@@ -3,13 +3,14 @@
 module top_tb;
 
 // `define BACK_PRESS_ON
+// `define TIMEOUT_DETECT_ON 
 
-localparam int TIMEOUT_THRESHOLD = 100000000000; 
-localparam int DEADLOCK_THRESHOLD = 1000000;
-localparam int NW_CLOCK_PERIOD = 12;
-localparam int BW_CLOCK_PERIOD = 12;
-localparam int BR_CLOCK_PERIOD = 22;
-localparam int PC_CLOCK_PERIOD = 12;
+localparam longint TIMEOUT_THRESHOLD = 100000; // only valid when TIMEOUT_DETECT_ON is defined
+localparam int DEADLOCK_THRESHOLD = 1000000; // unit: 100ps
+localparam int NW_CLOCK_PERIOD = 12; // unit: 100ps
+localparam int BW_CLOCK_PERIOD = 12; // unit: 100ps
+localparam int BR_CLOCK_PERIOD = 12; // unit: 100ps
+localparam int PC_CLOCK_PERIOD = 12; // unit: 100ps
 
 logic clk_nw, clk_bw, clk_br, clk_pc;
 logic rstn_nw, rstn_bw, rstn_br, rstn_pc;
@@ -35,19 +36,23 @@ bit all_tile_done;
 
 /* Task Definations */
 task resetClockDomainPC();
-    rstn_pc = 1'b0;
+    rstn_pc = 1'b1;
+    # 10 rstn_pc <= 1'b0;
 endtask
 
 task resetClockDomainBR();
-    rstn_br = 1'b0;
+    rstn_br = 1'b1;
+    # 10 rstn_br <= 1'b0;
 endtask
 
 task resetClockDomainBW();
-    rstn_bw = 1'b0;
+    rstn_bw = 1'b1;
+    # 10 rstn_bw <= 1'b0;
 endtask
 
 task resetClockDomainNW();
-    rstn_nw = 1'b0;
+    rstn_nw = 1'b1;
+    # 10 rstn_nw <= 1'b0;
 endtask
 
 task releaseResetClockDomainPC();
@@ -98,10 +103,20 @@ task detectDeadlockQuiting();
     end
 endtask
 
+task detectTimeoutQuiting();
+    `ifdef TIMEOUT_DETECT_ON
+    #(TIMEOUT_THRESHOLD);
+    quiting_state = "timeout";
+    `else
+    while(1) begin
+        @(posedge clk_nw);
+    end
+    `endif
+endtask
+
 task quitSimulation();
     state_file = $fopen("./quit_state.log");
     $fwrite(state_file, "%s", quiting_state);
-    $fclose(state_file);
     $finish;
 endtask
 
@@ -177,24 +192,27 @@ initial begin
     fork 
         detectNormalQuiting();
         detectDeadlockQuiting();
-        begin
-            #(TIMEOUT_THRESHOLD);
-            quiting_state = "timeout";
-        end
+        detectTimeoutQuiting();
     join_any
     quitSimulation();
 end
 
 /* Wave Dump */
 initial begin
-//    $fsdbDumpfile("wave.fsdb");
+    // $fsdbDumpfile("wave.fsdb");
 // //    $fsdbDumpvars(0, top_tb.system.tile_0_0);
 // //    $fsdbDumpvars(0, top_tb.system.noc);
 //    $fsdbDumpvars(3, top_tb.system);
-//    $fsdbDumpvars(0, top_tb.system.tile_0_2);
+    // $fsdbDumpvars(0, top_tb.system.tile_2_0);
+    // $fsdbDumpvars(0, top_tb.system.tile_2_0.im2col);
+    // $fsdbDumpvars(0, top_tb.system.tile_1_0.xbar);
+    // $fsdbDumpvars(0, top_tb.system.tile_0_0.im2col);
 //    $fsdbDumpMDA(0, top_tb.system.tile_2_1); //show array values
 //    $fsdbDumpMDA(0, top_tb.system.tile_0_2); //show array values
-//    $fsdbDumpMDA(0, top_tb.system.noc); //show array values
+    // $fsdbDumpMDA(0, top_tb.system.tile_2_0); //show array values
+    // $fsdbDumpMDA(0, top_tb.system.tile_2_0.im2col); //show array values
+    // $fsdbDumpMDA(0, top_tb.system.tile_1_0.xbar); //show array values
+    // $fsdbDumpMDA(0, top_tb.system.tile_0_0.im2col); //show array values
 end
 
 /* Tile Done Moniting */
@@ -213,6 +231,10 @@ end
 initial begin
     send_addr = 0;
     receive_addr = '{(`EPN){0}};
+end
+
+final begin
+    $fclose(state_file);
 end
 
 always @(posedge clk_nw or negedge rstn_nw) begin
@@ -237,10 +259,6 @@ always @(posedge clk_nw) begin
     end
 end
 
-// always@(posedge clk_nw) begin
-//    $display("addr@driver: %d", send_addr);
-// end
-
 assign data_i_inject = $shortrealtobits(input_data[send_addr]);
 
 system system(
@@ -262,23 +280,9 @@ system system(
     .ready_i_eject               (ready_i_eject)
 );
 
-/* Writing Results */
-// initial begin
-//     for(int i=0; i<`EPN; i=i+1) begin
-//         receive_file[i] = $fopen($sformatf("./receive_pool_eject%0d.txt", i));
-//     end
-// end
-
-// always@(posedge clk_nw) begin
-//     for(int i=0; i<`EPN; i=i+1) begin
-//         $fwrite(receive_file[0], "%b\n", data_o_eject[0]);
-//     end
-// end
-
 `include "tensor_loader.svh"
 
 endmodule
 
 
 
-         

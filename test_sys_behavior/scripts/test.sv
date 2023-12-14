@@ -1,25 +1,25 @@
-`timescale 100ps/1ps
+`timescale 1ns/1ns
 
 module test;
-
-localparam real a = 1;
-
-initial begin
-    # 1;
-    $display("%0t!!!!!!!!!!!!!!!!!%f", $time, a/2);
+int a = 0;
+logic clk = 0;
+always #5 clk = ~clk;
+always@(posedge clk) begin
+    a <= a + 1;
 end
 
+always@(posedge a) begin
+    $display("[Display]@%0t, a = %0d", $time, a);
+end
 
-// bit [31:0] temp_4b;
-// bit [7:0] temp_1b;
-
-// initial begin
-//     f_weight=$fopen("./...", "rb");
-//     for(int y=0; y<1000; y=y+1) for(int x=0; x<1000; x=x+1) begin
-//         $fread(temp_4b, f_weight);
-//         system.tile_0_0.xbar.weights[y][x] = $bitstoshortreal(temp_4b);
-//     end
-//     $display("weight of tile (0, 0) initializing complete ...")
+// always@(posedge clk) begin
+//     $strobe("[Strobe]@%0t, a = %0d", $time, a);
 // end
+
+initial begin
+    // $monitor("[Monitor]@%0t, a = %0d", $time, a);
+    # 100;
+    $finish;
+end
 
 endmodule

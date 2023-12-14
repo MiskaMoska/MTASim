@@ -29,4 +29,5 @@
 ./rtl/tile/sdpram.sv
 ./rtl/tile/tile.sv
 ./rtl/tile/xbar.sv
+./rtl/mon/mon_tile_res.sv
 ./top_tb.sv

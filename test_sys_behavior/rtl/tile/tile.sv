@@ -356,24 +356,23 @@ pooling_unit #(
 );
 
 /* For debugging */
+// ANCHOR token couting
 int crcnt = 0;
 int mrcnt = 0;
 int grcnt = 0;
 int scnt = 0;
-int ofsize_x, ofsize_y, ochan;
-int num_odata, num_cidata, num_midata, num_gidata;
+// int ofsize_x, ofsize_y, ochan;
+// int num_odata, num_cidata, num_midata, num_gidata;
 bit cast_receive_done = 0;
 bit send_done = 0;
 
-initial begin
-    ofsize_x = has_pool ? pool_ofsize_x : conv_ofsize_x;
-    ofsize_y = has_pool ? pool_ofsize_y : conv_ofsize_y;
-    ochan = xbar_num_ochan;
-    num_odata = ofsize_x * ofsize_y * ochan;
-    num_cidata = conv_ifsize_x * conv_ifsize_y * xbar_num_ichan;
-    num_midata = merge_in ? conv_ofsize_x * conv_ofsize_y * xbar_num_ichan : 0;
-    num_gidata = gather_in ? conv_ofsize_x * conv_ofsize_y * xbar_num_ichan : 0;
-end
+localparam int ofsize_x = has_pool ? pool_ofsize_x : conv_ofsize_x;
+localparam int ofsize_y = has_pool ? pool_ofsize_y : conv_ofsize_y;
+localparam int ochan = xbar_num_ochan;
+localparam int num_odata = ofsize_x * ofsize_y * ochan;
+localparam int num_cidata = conv_ifsize_x * conv_ifsize_y * xbar_num_ichan;
+localparam int num_midata = merge_in ? conv_ofsize_x * conv_ofsize_y * xbar_num_ichan : 0;
+localparam int num_gidata = gather_in ? conv_ofsize_x * conv_ofsize_y * xbar_num_ichan : 0;
 
 always@(posedge clk_nw) begin
     if(cast_valid_i & cast_ready_o) begin 
@@ -401,44 +400,116 @@ end
 
 assign frame_done = ~is_mapped | send_done;
 
-// shortreal result [ofsize_y] [ofsize_x] [ochan];
-// int oy, ox, oc;
+// ANCHOR intermediate data recording
+int f_cast_in, f_merge_in, f_gather_in, f_after_xbar, f_before_pool, f_data_out;
+int f_cast_in_shape, f_merge_in_shape, f_gather_in_shape, f_after_xbar_shape, f_before_pool_shape, f_data_out_shape;
 
-// always @(posedge clk_nw) begin
-//     if(cast_gather_valid_o & cast_gather_ready_i) begin
-//         result[oy][ox][oc] = $bitstoshortreal(cast_gather_data_o); 
-//         if(oc == ochan - 1) begin
-//             oc <= 0;
-//             if(ox == ofsize_x - 1) begin
-//                 ox <= 0;
-//                 if(oy == ofsize_y - 1) begin
-//                     oy <= 0;
-//                 end else begin
-//                     oy <= oy + 1;
-//                 end
-//             end else begin
-//                 ox <= ox + 1;
-//             end
-//         end else begin
-//             oc <= oc + 1;
-//         end
-//     end
-// end
+function open_monitor_files();
+    if(~is_mapped) return 0;
+    f_cast_in = $fopen($sformatf("./res/tile_%0d_%0d_cast_in.bin", x, y), "wb");
+    f_cast_in_shape = $fopen($sformatf("./res/shapes/tile_%0d_%0d_cast_in.txt", x, y), "w");
+    f_after_xbar = $fopen($sformatf("./res/tile_%0d_%0d_after_xbar.bin", x, y), "wb");
+    f_after_xbar_shape = $fopen($sformatf("./res/shapes/tile_%0d_%0d_after_xbar.txt", x, y), "w");
+    if(merge_in) begin
+        f_merge_in = $fopen($sformatf("./res/tile_%0d_%0d_merge_in.bin", x, y), "wb");
+        f_merge_in_shape = $fopen($sformatf("./res/shapes/tile_%0d_%0d_merge_in.txt", x, y), "w");
+    end
+    if(gather_in) begin
+        f_gather_in = $fopen($sformatf("./res/tile_%0d_%0d_gather_in.bin", x, y), "wb");
+        f_gather_in_shape = $fopen($sformatf("./res/shapes/tile_%0d_%0d_gather_in.txt", x, y), "w");
+    end
+    if(has_pool & (~merge_out)) begin
+        f_before_pool = $fopen($sformatf("./res/tile_%0d_%0d_before_pool.bin", x, y), "wb");
+        f_before_pool_shape = $fopen($sformatf("./res/shapes/tile_%0d_%0d_before_pool.txt", x, y), "w");
+    end
+    f_data_out = $fopen($sformatf("./res/tile_%0d_%0d_data_out.bin", x, y), "wb");
+    f_data_out_shape = $fopen($sformatf("./res/shapes/tile_%0d_%0d_data_out.txt", x, y), "w");
+endfunction
 
-// int fres;
-// initial begin
-//     fres = $fopen($sformatf("./res/tile_%0d_%0d.bin", x, y));
-//     oy = 0; ox = 0; oc = 0;
-//     wait(send_done) begin
-//         for(int i=0; i<ofsize_y; i=i+1) begin
-//             for(int j=0; j<ofsize_x; j=j+1) begin
-//                 for(int k=0; k<ochan; k=k+1) begin
-//                     $fwrite($bitstoshortreal(result[i][j][k]));
-//                 end
-//             end
-//         end
-//     end
-//     $fclose(fres);
-// end
+function close_monitor_files();
+    if(~is_mapped) return 0;
+    $fclose(f_cast_in);
+    $fclose(f_cast_in_shape);
+    $fclose(f_after_xbar);
+    $fclose(f_after_xbar_shape);
+    if(merge_in) begin
+        $fclose(f_merge_in);
+        $fclose(f_merge_in_shape);
+    end
+    if(gather_in) begin
+        $fclose(f_gather_in);
+        $fclose(f_gather_in_shape);
+    end
+    if(has_pool & (~merge_out)) begin
+        $fclose(f_before_pool);
+        $fclose(f_before_pool_shape);
+    end
+    $fclose(f_data_out);
+    $fclose(f_data_out_shape);
+endfunction
+
+function write_shape_to_file(int file, int height, int width, int channel);
+    $fdisplay(file, "%0d", height);
+    $fdisplay(file, "%0d", width);
+    $fdisplay(file, "%0d", channel);
+endfunction
+
+function write_all_shapes();
+    if(~is_mapped) return 0;
+    write_shape_to_file(f_cast_in_shape, conv_ifsize_y, conv_ifsize_x, xbar_num_ichan);
+    write_shape_to_file(f_after_xbar_shape, conv_ofsize_y, conv_ofsize_x, xbar_num_ochan);
+    if(merge_in)
+        write_shape_to_file(f_merge_in_shape, conv_ofsize_y, conv_ofsize_x, xbar_num_ochan);
+    if(gather_in)
+        write_shape_to_file(f_gather_in_shape, conv_ofsize_y, conv_ofsize_x, xbar_num_ochan);
+    if(has_pool & (~merge_out))
+        write_shape_to_file(f_before_pool_shape, conv_ofsize_y, conv_ofsize_x, xbar_num_ochan);
+    write_shape_to_file(f_data_out_shape, ofsize_y, ofsize_x, ochan);
+endfunction
+
+mon_tile_res_data mon_cast_in(
+    clk_nw, 
+    is_mapped & cast_valid_i & cast_ready_o, 
+    cast_data_i, f_cast_in
+);
+mon_tile_res_data mon_merge_in(
+    clk_nw, 
+    is_mapped & merge_in & merge_valid_i & merge_ready_o, 
+    merge_data_i, 
+    f_merge_in
+);
+mon_tile_res_data mon_gather_in(
+    clk_nw, 
+    is_mapped & gather_in & gather_valid_i & gather_ready_o, 
+    gather_data_i, 
+    f_gather_in
+);
+mon_tile_res_data mon_data_out(
+    clk_nw, 
+    is_mapped & (merge_out ? merge_valid_o & merge_ready_i : cast_gather_valid_o & cast_gather_ready_i), 
+    merge_out ? merge_data_o : cast_gather_data_o, 
+    f_data_out
+);
+mon_tile_res_vector #(xbar_num_ochan)mon_after_xbar(
+    clk_pc, 
+    is_mapped & xbar_valid_o & split_ready_o, 
+    xbar_data_o, 
+    f_after_xbar
+);
+mon_tile_res_vector #(xbar_num_ochan)mon_before_pool(
+    clk_pc, 
+    is_mapped & has_pool & (~merge_out) & act_valid_o & pool_ready_o, 
+    act_data_o, 
+    f_before_pool
+);
+
+initial begin
+    open_monitor_files();
+    write_all_shapes();
+end
+
+final begin
+    close_monitor_files();
+end
 
 endmodule 

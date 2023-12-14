@@ -6,7 +6,7 @@ viewPort 0 28 1908 406 274 99
 
 ; File list:
 ; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
-openDirFile -d / "" "/mnt/c/git/nvcim-nw/test_sys_behavior/wave.fsdb"
+openDirFile -d / "" "/mnt/c/git/mtasim/test_sys_behavior/wave.fsdb"
 
 ; file time scale:
 ; fileTimeScale ### s|ms|us|ns|ps
@@ -16,35 +16,16 @@ signalSpacing 5
 
 ; windowTimeUnit is used for zoom, cursor & marker
 ; waveform viewport range
-zoom 1513017287.223949 11733441037.223953
-cursor 4791775000.000000
+zoom 0.000000 1098474150.000000
+cursor 1000.000000
 marker 0.000000
 
 ; user define markers
 ; userMarker time_pos marker_name color linestyle
 ; visible top row signal index
-top 217
+top 12
 ; marker line index
-markerPos 229
-
-; logical expression list
-; addExprSig expr_name expression_string
-activeDirFile "" "/mnt/c/git/nvcim-nw/test_sys_behavior/wave.fsdb"
-
-addExprSig -b 1 -n UUUU logical_expression_2 "/top_tb/system/tile_5_1/im2col/fill_done[3]"&"/top_tb/system/tile_5_1\
-/im2col/fill_done[2]"&"/top_tb/system/tile_5_1/im2col/fill_done[1]"&"/\
-top_tb/system/tile_5_1/im2col/fill_done[0]"
-
-; rename signal list
-; addRenameSig new_name org_name
-
-addRenameSig "/fill_done" "/logical_expression_2" keep
-
-; logical expression list
-; addExprSig expr_name expression_string
-
-addExprSig -b 32 -n UU wrte-hold[31:0] "/top_tb/system/tile_0_0/crcnt[31:0]"-"/top_tb/system/tile_0_0/im2col/\
-temp_hold_addr[31:0]"
+markerPos 16
 
 ; event list
 ; addEvent event_name event_expression
@@ -64,242 +45,94 @@ COMPLEX_EVENT_END
 curSTATUS ByChange
 
 
-addGroup "G38"
-activeDirFile "" "/mnt/c/git/nvcim-nw/test_sys_behavior/wave.fsdb"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_5_1/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G39"
-addSignal -h 15 /top_tb/system/tile_5_1/im2col/buffer_state
-addGroup "G3"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_5_1/im2col/of_x[4:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_y[4:0]
-addGroup "G4"
-addSignal -h 15 /fill_done
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_5_1/im2col/fill_done[3:0]
-addSignal -h 15 -holdScope frame_done_bufr_pulse
-addSignal -h 15 -holdScope frame_done_bufw_pulse
-addGroup "G5"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_5_1/im2col/if_x[5:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_y[5:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_chan[5:0]
-addGroup "G6"
-addSignal -h 15 /top_tb/system/tile_5_1/im2col/buf_want_addr_ind
-addSignal -h 15 -holdScope buf_waddr_ind
-addSignal -h 15 -holdScope win_data_ready
-addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
-addGroup "Tile01"
-addSignal -h 15 /top_tb/system/tile_0_1/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 -UNSIGNED -UDEC -holdScope crcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope mrcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope grcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope scnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_odata[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_cidata[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_midata[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_gidata[31:0]
-addGroup "Tile11"
-addSignal -h 15 /top_tb/system/tile_1_1/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 /top_tb/system/tile_1_1/im2col/ready_o
-addSignal -h 15 -holdScope buffer_state
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_y[3:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_x[3:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
-addSignal -h 15 -holdScope win_data_ready
-addSignal -h 15 -holdScope ping_valid
-addSignal -h 15 -holdScope pong_valid
-addGroup "Tile12"
-addSignal -h 15 /top_tb/system/tile_1_2/im2col/ping_valid
-addSignal -h 15 -holdScope pong_valid
-addGroup "G11"
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_0_2/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope mrcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope grcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope scnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_odata[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_midata[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_gidata[31:0]
-addSignal -h 15 /top_tb/system/tile_0_2/im2col/ping_valid
-addSignal -h 15 -holdScope pong_valid
-addSignal -h 15 /top_tb/system/tile_0_2/add/bias_valid_i
-addSignal -h 15 -holdScope bias_ready_o
-addSignal -h 15 -holdScope merge_valid_i
-addSignal -h 15 -holdScope merge_ready_o
-addSignal -h 15 -holdScope gather_valid_i
-addSignal -h 15 -holdScope gather_ready_o
-addSignal -h 15 -holdScope ready_i
-addGroup "Tile42"
-addSignal -h 15 /top_tb/system/tile_4_2/add/valid_o
-addSignal -h 15 -holdScope ready_i
-addGroup "Tile55"
-addSignal -h 15 /top_tb/system/tile_5_5/add/valid_o
-addSignal -h 15 -holdScope ready_i
-addGroup "Tile14"
-addSignal -h 15 /top_tb/system/tile_1_4/add/ready_i
-addGroup "Tile06"
-addSignal -h 15 /top_tb/system/tile_0_6/add/ready_i
-addGroup "G16"
-addSignal -h 15 /top_tb/system/tile_5_7/add/ready_i
-addSignal -h 15 /top_tb/system/tile_5_7/cast_io/tl_ready_o
-addSignal -h 15 -holdScope tl_valid_i
-addGroup "G17"
-addSignal -h 15 /top_tb/system/tile_5_7/cast_io/nw_ready_i
-addSignal -h 15 /top_tb/system/tile_5_7/cast_gather_ready_i
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_5_7/cast_io/ocnt[7:0]
-addGroup "G19"
-addSignal -h 15 /top_tb/system/tile_0_3/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 /top_tb/system/tile_4_3/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 /top_tb/system/tile_5_3/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addGroup "G20"
-addSignal -h 15 /top_tb/system/tile_5_3/add/valid_o
-addSignal -h 15 -holdScope ready_i
-addGroup "Tile53"
-addSignal -h 15 /top_tb/system/tile_5_3/im2col/ping_valid
-addSignal -h 15 -holdScope pong_valid
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_x[3:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_y[3:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_chan[7:0]
-addSignal -h 15 -holdScope win_data_ready
-addSignal -h 15 -holdScope buf_want_addr_ind
-addSignal -h 15 -holdScope buf_waddr_ind
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_x[2:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_y[2:0]
-addSignal -h 15 -holdScope buf_hold_addr_ind
-addSignal -h 15 -holdScope ready_o
-addGroup "G22"
-addSignal -h 15 /top_tb/system/tile_0_6/im2col/valid_i
-addSignal -h 15 -holdScope ready_o
-addSignal -h 15 /top_tb/system/tile_1_4/im2col/ping_valid
-addSignal -h 15 -holdScope pong_valid
-addGroup "G21"
-addSignal -h 15 /top_tb/system/tile_1_4/im2col/valid_i
-addSignal -h 15 -holdScope ready_o
-addGroup "G23"
-addSignal -h 15 /top_tb/system/tile_5_3/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addGroup "G24"
-addSignal -h 15 /top_tb/system/tile_4_2/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addGroup "G25"
-addSignal -h 15 /top_tb/system/tile_3_2/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 -UNSIGNED -HEX -holdScope crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G26"
-addSignal -h 15 /top_tb/system/tile_0_2/merge_valid_i
-addSignal -h 15 -holdScope merge_ready_o
-addSignal -h 15 -UNSIGNED -HEX -holdScope crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G27"
-addSignal -h 15 /top_tb/system/tile_1_1/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 -UNSIGNED -HEX -holdScope crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G28"
-addSignal -h 15 /top_tb/system/tile_4_1/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addGroup "G29"
-addSignal -h 15 /top_tb/system/tile_2_0/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 -UNSIGNED -HEX -holdScope crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G30"
-addSignal -h 15 /top_tb/system/tile_0_0/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 -UNSIGNED -UDEC -holdScope crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G31"
-addSignal -h 15 /top_tb/system/tile_2_0/add/ready_i
-addSignal -h 15 /top_tb/system/tile_2_0/cast_gather_valid_o
-addSignal -h 15 -holdScope cast_gather_ready_i
-addGroup "G32"
-addSignal -h 15 /top_tb/system/tile_2_0/add/bias_valid_i
-addSignal -h 15 -holdScope bias_ready_o
-addGroup "G33"
-addSignal -h 15 /top_tb/system/tile_2_0/add/gather_valid_i
-addSignal -h 15 -holdScope gather_ready_o
-addGroup "G34"
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_1_0/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "Tile10"
-addSignal -h 15 /top_tb/system/tile_1_0/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addGroup "G36"
-addSignal -h 15 /top_tb/system/tile_0_0/im2col/ping_valid
-addSignal -h 15 -holdScope pong_valid
-addGroup "G37"
-addSignal -h 15 /top_tb/system/tile_0_0/im2col/buffer_state
-addSignal -h 15 -holdScope win_data_ready
-addSignal -h 15 -holdScope buf_waddr_ind
-addSignal -h 15 -holdScope buf_want_addr_ind
-addSignal -h 15 -holdScope buf_hold_addr_ind
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_y[6:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_x[6:0]
-addSignal -h 15 -holdScope ready_o
-addGroup "G40"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_0_0/im2col/if_x[7:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_y[7:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope if_chan[1:0]
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_0_0/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_0_0/im2col/temp_hold_x[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope temp_hold_y[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope temp_hold_addr[31:0]
-addSignal -h 15 -UNSIGNED -UDEC /wrte-hold[31:0]
-addGroup "G41"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_4_0/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_cidata[31:0]
-addSignal -h 15 /top_tb/system/tile_4_0/im2col/ping_valid
-addSignal -h 15 -holdScope pong_valid
-addGroup "G42"
-addSignal -h 15 /top_tb/system/tile_5_0/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 /top_tb/system/tile_5_1/cast_valid_i
-addSignal -h 15 -holdScope cast_ready_o
-addSignal -h 15 /top_tb/system/tile_5_1/im2col/buffer_state
-addSignal -h 15 -holdScope frame_done_bufw_level
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_5_1/num_cidata[31:0]
-addGroup "G43"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_5_1/im2col/buf_waddr[12:0]
-addSignal -h 15 -holdScope buf_waddr_ind
-addSignal -w analog -ds pwc -h 98 -UNSIGNED -UDEC -holdScope buf_hold_addr[12:0]
-addSignal -w analog -ds pwc -h 98 -UNSIGNED -UDEC /top_tb/system/tile_5_1/crcnt[31:0]
-addSignal -w analog -ds pwc -h 98 -UNSIGNED -UDEC /top_tb/system/tile_5_1/im2col/temp_hold_addr[31:0]
-addSignal -h 15 -holdScope buf_hold_addr_ind
-addGroup "G44"
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_4_7/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addGroup "G45"
-addSignal -h 15 -UNSIGNED -HEX /top_tb/system/tile_1_0/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope num_cidata[31:0]
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_1_0/im2col/of_x[5:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_y[5:0]
-addSignal -h 15 -UNSIGNED -HEX -holdScope fill_state[1:0]
-addSignal -h 15 -holdScope ping_valid
-addSignal -h 15 -holdScope pong_valid
-addGroup "G46"
-addSignal -h 15 /top_tb/system/tile_5_0/im2col/buffer_state
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_x[4:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope of_y[4:0]
-addSignal -h 15 -holdScope frame_done_bufr_tg
-addGroup "G47"
-addSignal -h 15 /top_tb/system/tile_5_0/im2col/buf_waddr_ind
-addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_waddr[12:0]
-addSignal -h 15 -holdScope buf_want_addr_ind
-addSignal -h 15 -UNSIGNED -UDEC -holdScope buf_want_addr[12:0]
-addSignal -h 15 -holdScope win_data_ready
-addGroup "G48"
-addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_5_0/crcnt[31:0]
-addSignal -h 15 -UNSIGNED -UDEC -holdScope num_cidata[31:0]
 addGroup "G49"
+addGroup "G50"
+addGroup "G3"
+addGroup "G4"
+addGroup "G5"
+addGroup "G6"
+addGroup "G7"
+addGroup "G8"
+addGroup "G9"
+activeDirFile "" "/mnt/c/git/mtasim/test_sys_behavior/wave.fsdb"
+addSignal -h 15 -UNSIGNED -UDEC /top_tb/system/tile_2_0/im2col/of_y[5:0]
+addSignal -h 15 -UNSIGNED -UDEC -holdScope of_x[5:0]
+addSignal -h 15 -UNSIGNED -IEEE754 /top_tb/system/tile_2_0/xbar_data_o[1][31:0]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope bias_data_o[1][31:0]
+addSignal -h 15 -UNSIGNED -IEEE754 -holdScope gather_io_data_o[1][31:0]
+addSignal -h 15 -UNSIGNED -IEEE754 /top_tb/system/tile_2_0/gather_io/nw_data_i[31:0]
+addSignal -h 15 -MAGN -UDEC -holdScope icnt[7:0]
+addSignal -h 15 -holdScope ibuf_empty
+addSignal -expanded -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[0:62]
+addSignal -h 15 -UNSIGNED -HEX -holdScope ibuf_dout[31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[0][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[1][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[2][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[3][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[4][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[5][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[6][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[7][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[8][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[9][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[10][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[11][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[12][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[13][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[14][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[15][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[16][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[17][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[18][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[19][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[20][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[21][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[22][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[23][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[24][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[25][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[26][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[27][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[28][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[29][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[30][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[31][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[32][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[33][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[34][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[35][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[36][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[37][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[38][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[39][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[40][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[41][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[42][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[43][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[44][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[45][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[46][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[47][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[48][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[49][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[50][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[51][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[52][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[53][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[54][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[55][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[56][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[57][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[58][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[59][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[60][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[61][31:0]
+addSignal -h 15 -UNSIGNED -HEX -holdScope tl_data_o_reg[62][31:0]
+addGroup "G10"
 
 ; getSignalForm Scope Hierarchy Status
 ; active file of getSignalForm
-activeDirFile "" "/mnt/c/git/nvcim-nw/test_sys_behavior/wave.fsdb"
+activeDirFile "" "/mnt/c/git/mtasim/test_sys_behavior/wave.fsdb"
 
 GETSIGNALFORM_SCOPE_HIERARCHY_BEGIN
 getSignalForm close

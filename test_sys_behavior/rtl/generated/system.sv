@@ -706,6 +706,164 @@ tile #(
 
 
 tile #(
+    .x                              (0),
+    .y                              (8),
+    .is_mapped                      (is_mapped[0][8]),
+    .conv_kernel_x                  (conv_kernel_x[0][8]), 
+    .conv_kernel_y                  (conv_kernel_y[0][8]),
+    .conv_stride_x                  (conv_stride_x[0][8]), 
+    .conv_stride_y                  (conv_stride_y[0][8]),
+    .conv_ifsize_x                  (conv_ifsize_x[0][8]), 
+    .conv_ifsize_y                  (conv_ifsize_y[0][8]),
+    .conv_ifpads_u                  (conv_ifpads_u[0][8]), 
+    .conv_ifpads_d                  (conv_ifpads_d[0][8]),
+    .conv_ifpads_l                  (conv_ifpads_l[0][8]), 
+    .conv_ifpads_r                  (conv_ifpads_r[0][8]),
+    .conv_ofsize_x                  (conv_ofsize_x[0][8]), 
+    .conv_ofsize_y                  (conv_ofsize_y[0][8]),
+    .xbar_num_ichan                 (xbar_num_ichan[0][8]),
+    .xbar_num_ochan                 (xbar_num_ochan[0][8]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[0][8]),
+    .has_bias                       (has_bias[0][8]),
+    .has_act                        (has_act[0][8]),
+    .has_pool                       (has_pool[0][8]),
+    .pool_mode                      (pool_mode[0][8]),
+    .pool_kernel_x                  (pool_kernel_x[0][8]), 
+    .pool_kernel_y                  (pool_kernel_y[0][8]),
+    .pool_stride_x                  (pool_stride_x[0][8]), 
+    .pool_stride_y                  (pool_stride_y[0][8]),
+    .pool_ifsize_x                  (pool_ifsize_x[0][8]), 
+    .pool_ifsize_y                  (pool_ifsize_y[0][8]),
+    .pool_ifpads_u                  (pool_ifpads_u[0][8]), 
+    .pool_ifpads_d                  (pool_ifpads_d[0][8]),
+    .pool_ifpads_l                  (pool_ifpads_l[0][8]), 
+    .pool_ifpads_r                  (pool_ifpads_r[0][8]),
+    .pool_ofsize_x                  (pool_ofsize_x[0][8]), 
+    .pool_ofsize_y                  (pool_ofsize_y[0][8]),
+    .merge_in                       (merge_in[0][8]),
+    .gather_in                      (gather_in[0][8]),
+    .merge_out                      (merge_out[0][8]),
+    .gather_out                     (gather_out[0][8]),
+    .cast_out                       (cast_out[0][8])
+)tile_0_8(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[0][8]),
+    .cast_valid_i                   (cast_valid_n2t[0][8]),
+    .cast_ready_o                   (cast_ready_t2n[0][8]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[0][8]),
+    .merge_valid_i                  (merge_valid_n2t[0][8]),
+    .merge_ready_o                  (merge_ready_t2n[0][8]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[0][8]),
+    .gather_valid_i                 (gather_valid_n2t[0][8]),
+    .gather_ready_o                 (gather_ready_t2n[0][8]),
+
+    // cast gather out
+    .cast_gather_data_o             (cast_gather_data_t2n[0][8]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[0][8]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[0][8]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[0][8]),
+    .merge_valid_o                  (merge_valid_t2n[0][8]),
+    .merge_ready_i                  (merge_ready_n2t[0][8]),
+
+    .frame_done                     (tile_done[0][8])
+);
+
+
+tile #(
+    .x                              (0),
+    .y                              (9),
+    .is_mapped                      (is_mapped[0][9]),
+    .conv_kernel_x                  (conv_kernel_x[0][9]), 
+    .conv_kernel_y                  (conv_kernel_y[0][9]),
+    .conv_stride_x                  (conv_stride_x[0][9]), 
+    .conv_stride_y                  (conv_stride_y[0][9]),
+    .conv_ifsize_x                  (conv_ifsize_x[0][9]), 
+    .conv_ifsize_y                  (conv_ifsize_y[0][9]),
+    .conv_ifpads_u                  (conv_ifpads_u[0][9]), 
+    .conv_ifpads_d                  (conv_ifpads_d[0][9]),
+    .conv_ifpads_l                  (conv_ifpads_l[0][9]), 
+    .conv_ifpads_r                  (conv_ifpads_r[0][9]),
+    .conv_ofsize_x                  (conv_ofsize_x[0][9]), 
+    .conv_ofsize_y                  (conv_ofsize_y[0][9]),
+    .xbar_num_ichan                 (xbar_num_ichan[0][9]),
+    .xbar_num_ochan                 (xbar_num_ochan[0][9]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[0][9]),
+    .has_bias                       (has_bias[0][9]),
+    .has_act                        (has_act[0][9]),
+    .has_pool                       (has_pool[0][9]),
+    .pool_mode                      (pool_mode[0][9]),
+    .pool_kernel_x                  (pool_kernel_x[0][9]), 
+    .pool_kernel_y                  (pool_kernel_y[0][9]),
+    .pool_stride_x                  (pool_stride_x[0][9]), 
+    .pool_stride_y                  (pool_stride_y[0][9]),
+    .pool_ifsize_x                  (pool_ifsize_x[0][9]), 
+    .pool_ifsize_y                  (pool_ifsize_y[0][9]),
+    .pool_ifpads_u                  (pool_ifpads_u[0][9]), 
+    .pool_ifpads_d                  (pool_ifpads_d[0][9]),
+    .pool_ifpads_l                  (pool_ifpads_l[0][9]), 
+    .pool_ifpads_r                  (pool_ifpads_r[0][9]),
+    .pool_ofsize_x                  (pool_ofsize_x[0][9]), 
+    .pool_ofsize_y                  (pool_ofsize_y[0][9]),
+    .merge_in                       (merge_in[0][9]),
+    .gather_in                      (gather_in[0][9]),
+    .merge_out                      (merge_out[0][9]),
+    .gather_out                     (gather_out[0][9]),
+    .cast_out                       (cast_out[0][9])
+)tile_0_9(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[0][9]),
+    .cast_valid_i                   (cast_valid_n2t[0][9]),
+    .cast_ready_o                   (cast_ready_t2n[0][9]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[0][9]),
+    .merge_valid_i                  (merge_valid_n2t[0][9]),
+    .merge_ready_o                  (merge_ready_t2n[0][9]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[0][9]),
+    .gather_valid_i                 (gather_valid_n2t[0][9]),
+    .gather_ready_o                 (gather_ready_t2n[0][9]),
+
+    // cast gather out
+    .cast_gather_data_o             (cast_gather_data_t2n[0][9]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[0][9]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[0][9]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[0][9]),
+    .merge_valid_o                  (merge_valid_t2n[0][9]),
+    .merge_ready_i                  (merge_ready_n2t[0][9]),
+
+    .frame_done                     (tile_done[0][9])
+);
+
+
+tile #(
     .x                              (1),
     .y                              (0),
     .is_mapped                      (is_mapped[1][0]),
@@ -1258,9 +1416,6 @@ tile #(
 );
 
 
-assign cast_gather_data_t2n[1][7] = 0;
-assign cast_gather_valid_t2n[1][7] = 0;
-
 tile #(
     .x                              (1),
     .y                              (7),
@@ -1327,9 +1482,9 @@ tile #(
     .gather_ready_o                 (gather_ready_t2n[1][7]),
 
     // cast gather out
-    .cast_gather_data_o             (data_o_eject[1]),
-    .cast_gather_valid_o            (valid_o_eject[1]),   
-    .cast_gather_ready_i            (ready_i_eject[1]),
+    .cast_gather_data_o             (cast_gather_data_t2n[1][7]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[1][7]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[1][7]),
 
     // merge out
     .merge_data_o                   (merge_data_t2n[1][7]),
@@ -1337,6 +1492,164 @@ tile #(
     .merge_ready_i                  (merge_ready_n2t[1][7]),
 
     .frame_done                     (tile_done[1][7])
+);
+
+
+tile #(
+    .x                              (1),
+    .y                              (8),
+    .is_mapped                      (is_mapped[1][8]),
+    .conv_kernel_x                  (conv_kernel_x[1][8]), 
+    .conv_kernel_y                  (conv_kernel_y[1][8]),
+    .conv_stride_x                  (conv_stride_x[1][8]), 
+    .conv_stride_y                  (conv_stride_y[1][8]),
+    .conv_ifsize_x                  (conv_ifsize_x[1][8]), 
+    .conv_ifsize_y                  (conv_ifsize_y[1][8]),
+    .conv_ifpads_u                  (conv_ifpads_u[1][8]), 
+    .conv_ifpads_d                  (conv_ifpads_d[1][8]),
+    .conv_ifpads_l                  (conv_ifpads_l[1][8]), 
+    .conv_ifpads_r                  (conv_ifpads_r[1][8]),
+    .conv_ofsize_x                  (conv_ofsize_x[1][8]), 
+    .conv_ofsize_y                  (conv_ofsize_y[1][8]),
+    .xbar_num_ichan                 (xbar_num_ichan[1][8]),
+    .xbar_num_ochan                 (xbar_num_ochan[1][8]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[1][8]),
+    .has_bias                       (has_bias[1][8]),
+    .has_act                        (has_act[1][8]),
+    .has_pool                       (has_pool[1][8]),
+    .pool_mode                      (pool_mode[1][8]),
+    .pool_kernel_x                  (pool_kernel_x[1][8]), 
+    .pool_kernel_y                  (pool_kernel_y[1][8]),
+    .pool_stride_x                  (pool_stride_x[1][8]), 
+    .pool_stride_y                  (pool_stride_y[1][8]),
+    .pool_ifsize_x                  (pool_ifsize_x[1][8]), 
+    .pool_ifsize_y                  (pool_ifsize_y[1][8]),
+    .pool_ifpads_u                  (pool_ifpads_u[1][8]), 
+    .pool_ifpads_d                  (pool_ifpads_d[1][8]),
+    .pool_ifpads_l                  (pool_ifpads_l[1][8]), 
+    .pool_ifpads_r                  (pool_ifpads_r[1][8]),
+    .pool_ofsize_x                  (pool_ofsize_x[1][8]), 
+    .pool_ofsize_y                  (pool_ofsize_y[1][8]),
+    .merge_in                       (merge_in[1][8]),
+    .gather_in                      (gather_in[1][8]),
+    .merge_out                      (merge_out[1][8]),
+    .gather_out                     (gather_out[1][8]),
+    .cast_out                       (cast_out[1][8])
+)tile_1_8(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[1][8]),
+    .cast_valid_i                   (cast_valid_n2t[1][8]),
+    .cast_ready_o                   (cast_ready_t2n[1][8]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[1][8]),
+    .merge_valid_i                  (merge_valid_n2t[1][8]),
+    .merge_ready_o                  (merge_ready_t2n[1][8]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[1][8]),
+    .gather_valid_i                 (gather_valid_n2t[1][8]),
+    .gather_ready_o                 (gather_ready_t2n[1][8]),
+
+    // cast gather out
+    .cast_gather_data_o             (cast_gather_data_t2n[1][8]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[1][8]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[1][8]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[1][8]),
+    .merge_valid_o                  (merge_valid_t2n[1][8]),
+    .merge_ready_i                  (merge_ready_n2t[1][8]),
+
+    .frame_done                     (tile_done[1][8])
+);
+
+
+tile #(
+    .x                              (1),
+    .y                              (9),
+    .is_mapped                      (is_mapped[1][9]),
+    .conv_kernel_x                  (conv_kernel_x[1][9]), 
+    .conv_kernel_y                  (conv_kernel_y[1][9]),
+    .conv_stride_x                  (conv_stride_x[1][9]), 
+    .conv_stride_y                  (conv_stride_y[1][9]),
+    .conv_ifsize_x                  (conv_ifsize_x[1][9]), 
+    .conv_ifsize_y                  (conv_ifsize_y[1][9]),
+    .conv_ifpads_u                  (conv_ifpads_u[1][9]), 
+    .conv_ifpads_d                  (conv_ifpads_d[1][9]),
+    .conv_ifpads_l                  (conv_ifpads_l[1][9]), 
+    .conv_ifpads_r                  (conv_ifpads_r[1][9]),
+    .conv_ofsize_x                  (conv_ofsize_x[1][9]), 
+    .conv_ofsize_y                  (conv_ofsize_y[1][9]),
+    .xbar_num_ichan                 (xbar_num_ichan[1][9]),
+    .xbar_num_ochan                 (xbar_num_ochan[1][9]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[1][9]),
+    .has_bias                       (has_bias[1][9]),
+    .has_act                        (has_act[1][9]),
+    .has_pool                       (has_pool[1][9]),
+    .pool_mode                      (pool_mode[1][9]),
+    .pool_kernel_x                  (pool_kernel_x[1][9]), 
+    .pool_kernel_y                  (pool_kernel_y[1][9]),
+    .pool_stride_x                  (pool_stride_x[1][9]), 
+    .pool_stride_y                  (pool_stride_y[1][9]),
+    .pool_ifsize_x                  (pool_ifsize_x[1][9]), 
+    .pool_ifsize_y                  (pool_ifsize_y[1][9]),
+    .pool_ifpads_u                  (pool_ifpads_u[1][9]), 
+    .pool_ifpads_d                  (pool_ifpads_d[1][9]),
+    .pool_ifpads_l                  (pool_ifpads_l[1][9]), 
+    .pool_ifpads_r                  (pool_ifpads_r[1][9]),
+    .pool_ofsize_x                  (pool_ofsize_x[1][9]), 
+    .pool_ofsize_y                  (pool_ofsize_y[1][9]),
+    .merge_in                       (merge_in[1][9]),
+    .gather_in                      (gather_in[1][9]),
+    .merge_out                      (merge_out[1][9]),
+    .gather_out                     (gather_out[1][9]),
+    .cast_out                       (cast_out[1][9])
+)tile_1_9(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[1][9]),
+    .cast_valid_i                   (cast_valid_n2t[1][9]),
+    .cast_ready_o                   (cast_ready_t2n[1][9]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[1][9]),
+    .merge_valid_i                  (merge_valid_n2t[1][9]),
+    .merge_ready_o                  (merge_ready_t2n[1][9]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[1][9]),
+    .gather_valid_i                 (gather_valid_n2t[1][9]),
+    .gather_ready_o                 (gather_ready_t2n[1][9]),
+
+    // cast gather out
+    .cast_gather_data_o             (cast_gather_data_t2n[1][9]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[1][9]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[1][9]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[1][9]),
+    .merge_valid_o                  (merge_valid_t2n[1][9]),
+    .merge_ready_i                  (merge_ready_n2t[1][9]),
+
+    .frame_done                     (tile_done[1][9])
 );
 
 
@@ -1969,6 +2282,170 @@ tile #(
     .merge_ready_i                  (merge_ready_n2t[2][7]),
 
     .frame_done                     (tile_done[2][7])
+);
+
+
+assign cast_gather_data_t2n[2][8] = 0;
+assign cast_gather_valid_t2n[2][8] = 0;
+
+tile #(
+    .x                              (2),
+    .y                              (8),
+    .is_mapped                      (is_mapped[2][8]),
+    .conv_kernel_x                  (conv_kernel_x[2][8]), 
+    .conv_kernel_y                  (conv_kernel_y[2][8]),
+    .conv_stride_x                  (conv_stride_x[2][8]), 
+    .conv_stride_y                  (conv_stride_y[2][8]),
+    .conv_ifsize_x                  (conv_ifsize_x[2][8]), 
+    .conv_ifsize_y                  (conv_ifsize_y[2][8]),
+    .conv_ifpads_u                  (conv_ifpads_u[2][8]), 
+    .conv_ifpads_d                  (conv_ifpads_d[2][8]),
+    .conv_ifpads_l                  (conv_ifpads_l[2][8]), 
+    .conv_ifpads_r                  (conv_ifpads_r[2][8]),
+    .conv_ofsize_x                  (conv_ofsize_x[2][8]), 
+    .conv_ofsize_y                  (conv_ofsize_y[2][8]),
+    .xbar_num_ichan                 (xbar_num_ichan[2][8]),
+    .xbar_num_ochan                 (xbar_num_ochan[2][8]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[2][8]),
+    .has_bias                       (has_bias[2][8]),
+    .has_act                        (has_act[2][8]),
+    .has_pool                       (has_pool[2][8]),
+    .pool_mode                      (pool_mode[2][8]),
+    .pool_kernel_x                  (pool_kernel_x[2][8]), 
+    .pool_kernel_y                  (pool_kernel_y[2][8]),
+    .pool_stride_x                  (pool_stride_x[2][8]), 
+    .pool_stride_y                  (pool_stride_y[2][8]),
+    .pool_ifsize_x                  (pool_ifsize_x[2][8]), 
+    .pool_ifsize_y                  (pool_ifsize_y[2][8]),
+    .pool_ifpads_u                  (pool_ifpads_u[2][8]), 
+    .pool_ifpads_d                  (pool_ifpads_d[2][8]),
+    .pool_ifpads_l                  (pool_ifpads_l[2][8]), 
+    .pool_ifpads_r                  (pool_ifpads_r[2][8]),
+    .pool_ofsize_x                  (pool_ofsize_x[2][8]), 
+    .pool_ofsize_y                  (pool_ofsize_y[2][8]),
+    .merge_in                       (merge_in[2][8]),
+    .gather_in                      (gather_in[2][8]),
+    .merge_out                      (merge_out[2][8]),
+    .gather_out                     (gather_out[2][8]),
+    .cast_out                       (cast_out[2][8])
+)tile_2_8(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[2][8]),
+    .cast_valid_i                   (cast_valid_n2t[2][8]),
+    .cast_ready_o                   (cast_ready_t2n[2][8]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[2][8]),
+    .merge_valid_i                  (merge_valid_n2t[2][8]),
+    .merge_ready_o                  (merge_ready_t2n[2][8]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[2][8]),
+    .gather_valid_i                 (gather_valid_n2t[2][8]),
+    .gather_ready_o                 (gather_ready_t2n[2][8]),
+
+    // cast gather out
+    .cast_gather_data_o             (data_o_eject[0]),
+    .cast_gather_valid_o            (valid_o_eject[0]),   
+    .cast_gather_ready_i            (ready_i_eject[0]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[2][8]),
+    .merge_valid_o                  (merge_valid_t2n[2][8]),
+    .merge_ready_i                  (merge_ready_n2t[2][8]),
+
+    .frame_done                     (tile_done[2][8])
+);
+
+
+assign cast_gather_data_t2n[2][9] = 0;
+assign cast_gather_valid_t2n[2][9] = 0;
+
+tile #(
+    .x                              (2),
+    .y                              (9),
+    .is_mapped                      (is_mapped[2][9]),
+    .conv_kernel_x                  (conv_kernel_x[2][9]), 
+    .conv_kernel_y                  (conv_kernel_y[2][9]),
+    .conv_stride_x                  (conv_stride_x[2][9]), 
+    .conv_stride_y                  (conv_stride_y[2][9]),
+    .conv_ifsize_x                  (conv_ifsize_x[2][9]), 
+    .conv_ifsize_y                  (conv_ifsize_y[2][9]),
+    .conv_ifpads_u                  (conv_ifpads_u[2][9]), 
+    .conv_ifpads_d                  (conv_ifpads_d[2][9]),
+    .conv_ifpads_l                  (conv_ifpads_l[2][9]), 
+    .conv_ifpads_r                  (conv_ifpads_r[2][9]),
+    .conv_ofsize_x                  (conv_ofsize_x[2][9]), 
+    .conv_ofsize_y                  (conv_ofsize_y[2][9]),
+    .xbar_num_ichan                 (xbar_num_ichan[2][9]),
+    .xbar_num_ochan                 (xbar_num_ochan[2][9]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[2][9]),
+    .has_bias                       (has_bias[2][9]),
+    .has_act                        (has_act[2][9]),
+    .has_pool                       (has_pool[2][9]),
+    .pool_mode                      (pool_mode[2][9]),
+    .pool_kernel_x                  (pool_kernel_x[2][9]), 
+    .pool_kernel_y                  (pool_kernel_y[2][9]),
+    .pool_stride_x                  (pool_stride_x[2][9]), 
+    .pool_stride_y                  (pool_stride_y[2][9]),
+    .pool_ifsize_x                  (pool_ifsize_x[2][9]), 
+    .pool_ifsize_y                  (pool_ifsize_y[2][9]),
+    .pool_ifpads_u                  (pool_ifpads_u[2][9]), 
+    .pool_ifpads_d                  (pool_ifpads_d[2][9]),
+    .pool_ifpads_l                  (pool_ifpads_l[2][9]), 
+    .pool_ifpads_r                  (pool_ifpads_r[2][9]),
+    .pool_ofsize_x                  (pool_ofsize_x[2][9]), 
+    .pool_ofsize_y                  (pool_ofsize_y[2][9]),
+    .merge_in                       (merge_in[2][9]),
+    .gather_in                      (gather_in[2][9]),
+    .merge_out                      (merge_out[2][9]),
+    .gather_out                     (gather_out[2][9]),
+    .cast_out                       (cast_out[2][9])
+)tile_2_9(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[2][9]),
+    .cast_valid_i                   (cast_valid_n2t[2][9]),
+    .cast_ready_o                   (cast_ready_t2n[2][9]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[2][9]),
+    .merge_valid_i                  (merge_valid_n2t[2][9]),
+    .merge_ready_o                  (merge_ready_t2n[2][9]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[2][9]),
+    .gather_valid_i                 (gather_valid_n2t[2][9]),
+    .gather_ready_o                 (gather_ready_t2n[2][9]),
+
+    // cast gather out
+    .cast_gather_data_o             (data_o_eject[1]),
+    .cast_gather_valid_o            (valid_o_eject[1]),   
+    .cast_gather_ready_i            (ready_i_eject[1]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[2][9]),
+    .merge_valid_o                  (merge_valid_t2n[2][9]),
+    .merge_ready_i                  (merge_ready_n2t[2][9]),
+
+    .frame_done                     (tile_done[2][9])
 );
 
 
@@ -2605,6 +3082,164 @@ tile #(
 
 
 tile #(
+    .x                              (3),
+    .y                              (8),
+    .is_mapped                      (is_mapped[3][8]),
+    .conv_kernel_x                  (conv_kernel_x[3][8]), 
+    .conv_kernel_y                  (conv_kernel_y[3][8]),
+    .conv_stride_x                  (conv_stride_x[3][8]), 
+    .conv_stride_y                  (conv_stride_y[3][8]),
+    .conv_ifsize_x                  (conv_ifsize_x[3][8]), 
+    .conv_ifsize_y                  (conv_ifsize_y[3][8]),
+    .conv_ifpads_u                  (conv_ifpads_u[3][8]), 
+    .conv_ifpads_d                  (conv_ifpads_d[3][8]),
+    .conv_ifpads_l                  (conv_ifpads_l[3][8]), 
+    .conv_ifpads_r                  (conv_ifpads_r[3][8]),
+    .conv_ofsize_x                  (conv_ofsize_x[3][8]), 
+    .conv_ofsize_y                  (conv_ofsize_y[3][8]),
+    .xbar_num_ichan                 (xbar_num_ichan[3][8]),
+    .xbar_num_ochan                 (xbar_num_ochan[3][8]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[3][8]),
+    .has_bias                       (has_bias[3][8]),
+    .has_act                        (has_act[3][8]),
+    .has_pool                       (has_pool[3][8]),
+    .pool_mode                      (pool_mode[3][8]),
+    .pool_kernel_x                  (pool_kernel_x[3][8]), 
+    .pool_kernel_y                  (pool_kernel_y[3][8]),
+    .pool_stride_x                  (pool_stride_x[3][8]), 
+    .pool_stride_y                  (pool_stride_y[3][8]),
+    .pool_ifsize_x                  (pool_ifsize_x[3][8]), 
+    .pool_ifsize_y                  (pool_ifsize_y[3][8]),
+    .pool_ifpads_u                  (pool_ifpads_u[3][8]), 
+    .pool_ifpads_d                  (pool_ifpads_d[3][8]),
+    .pool_ifpads_l                  (pool_ifpads_l[3][8]), 
+    .pool_ifpads_r                  (pool_ifpads_r[3][8]),
+    .pool_ofsize_x                  (pool_ofsize_x[3][8]), 
+    .pool_ofsize_y                  (pool_ofsize_y[3][8]),
+    .merge_in                       (merge_in[3][8]),
+    .gather_in                      (gather_in[3][8]),
+    .merge_out                      (merge_out[3][8]),
+    .gather_out                     (gather_out[3][8]),
+    .cast_out                       (cast_out[3][8])
+)tile_3_8(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[3][8]),
+    .cast_valid_i                   (cast_valid_n2t[3][8]),
+    .cast_ready_o                   (cast_ready_t2n[3][8]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[3][8]),
+    .merge_valid_i                  (merge_valid_n2t[3][8]),
+    .merge_ready_o                  (merge_ready_t2n[3][8]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[3][8]),
+    .gather_valid_i                 (gather_valid_n2t[3][8]),
+    .gather_ready_o                 (gather_ready_t2n[3][8]),
+
+    // cast gather out
+    .cast_gather_data_o             (cast_gather_data_t2n[3][8]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[3][8]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[3][8]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[3][8]),
+    .merge_valid_o                  (merge_valid_t2n[3][8]),
+    .merge_ready_i                  (merge_ready_n2t[3][8]),
+
+    .frame_done                     (tile_done[3][8])
+);
+
+
+tile #(
+    .x                              (3),
+    .y                              (9),
+    .is_mapped                      (is_mapped[3][9]),
+    .conv_kernel_x                  (conv_kernel_x[3][9]), 
+    .conv_kernel_y                  (conv_kernel_y[3][9]),
+    .conv_stride_x                  (conv_stride_x[3][9]), 
+    .conv_stride_y                  (conv_stride_y[3][9]),
+    .conv_ifsize_x                  (conv_ifsize_x[3][9]), 
+    .conv_ifsize_y                  (conv_ifsize_y[3][9]),
+    .conv_ifpads_u                  (conv_ifpads_u[3][9]), 
+    .conv_ifpads_d                  (conv_ifpads_d[3][9]),
+    .conv_ifpads_l                  (conv_ifpads_l[3][9]), 
+    .conv_ifpads_r                  (conv_ifpads_r[3][9]),
+    .conv_ofsize_x                  (conv_ofsize_x[3][9]), 
+    .conv_ofsize_y                  (conv_ofsize_y[3][9]),
+    .xbar_num_ichan                 (xbar_num_ichan[3][9]),
+    .xbar_num_ochan                 (xbar_num_ochan[3][9]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[3][9]),
+    .has_bias                       (has_bias[3][9]),
+    .has_act                        (has_act[3][9]),
+    .has_pool                       (has_pool[3][9]),
+    .pool_mode                      (pool_mode[3][9]),
+    .pool_kernel_x                  (pool_kernel_x[3][9]), 
+    .pool_kernel_y                  (pool_kernel_y[3][9]),
+    .pool_stride_x                  (pool_stride_x[3][9]), 
+    .pool_stride_y                  (pool_stride_y[3][9]),
+    .pool_ifsize_x                  (pool_ifsize_x[3][9]), 
+    .pool_ifsize_y                  (pool_ifsize_y[3][9]),
+    .pool_ifpads_u                  (pool_ifpads_u[3][9]), 
+    .pool_ifpads_d                  (pool_ifpads_d[3][9]),
+    .pool_ifpads_l                  (pool_ifpads_l[3][9]), 
+    .pool_ifpads_r                  (pool_ifpads_r[3][9]),
+    .pool_ofsize_x                  (pool_ofsize_x[3][9]), 
+    .pool_ofsize_y                  (pool_ofsize_y[3][9]),
+    .merge_in                       (merge_in[3][9]),
+    .gather_in                      (gather_in[3][9]),
+    .merge_out                      (merge_out[3][9]),
+    .gather_out                     (gather_out[3][9]),
+    .cast_out                       (cast_out[3][9])
+)tile_3_9(
+    .clk_nw                         (clk_nw),
+    .clk_bw                         (clk_bw),
+    .clk_br                         (clk_br),
+    .clk_pc                         (clk_pc),
+    .rstn_nw                        (rstn_nw), 
+    .rstn_bw                        (rstn_bw), 
+    .rstn_br                        (rstn_br), 
+    .rstn_pc                        (rstn_pc), 
+
+    // cast in
+    .cast_data_i                    (cast_data_n2t[3][9]),
+    .cast_valid_i                   (cast_valid_n2t[3][9]),
+    .cast_ready_o                   (cast_ready_t2n[3][9]),
+
+    // merge in
+    .merge_data_i                   (merge_data_n2t[3][9]),
+    .merge_valid_i                  (merge_valid_n2t[3][9]),
+    .merge_ready_o                  (merge_ready_t2n[3][9]),
+
+    // gather in 
+    .gather_data_i                  (gather_data_n2t[3][9]),
+    .gather_valid_i                 (gather_valid_n2t[3][9]),
+    .gather_ready_o                 (gather_ready_t2n[3][9]),
+
+    // cast gather out
+    .cast_gather_data_o             (cast_gather_data_t2n[3][9]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[3][9]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[3][9]),
+
+    // merge out
+    .merge_data_o                   (merge_data_t2n[3][9]),
+    .merge_valid_o                  (merge_valid_t2n[3][9]),
+    .merge_ready_i                  (merge_ready_n2t[3][9]),
+
+    .frame_done                     (tile_done[3][9])
+);
+
+
+tile #(
     .x                              (4),
     .y                              (0),
     .is_mapped                      (is_mapped[4][0]),
@@ -3237,46 +3872,46 @@ tile #(
 
 
 tile #(
-    .x                              (5),
-    .y                              (0),
-    .is_mapped                      (is_mapped[5][0]),
-    .conv_kernel_x                  (conv_kernel_x[5][0]), 
-    .conv_kernel_y                  (conv_kernel_y[5][0]),
-    .conv_stride_x                  (conv_stride_x[5][0]), 
-    .conv_stride_y                  (conv_stride_y[5][0]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][0]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][0]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][0]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][0]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][0]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][0]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][0]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][0]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][0]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][0]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][0]),
-    .has_bias                       (has_bias[5][0]),
-    .has_act                        (has_act[5][0]),
-    .has_pool                       (has_pool[5][0]),
-    .pool_mode                      (pool_mode[5][0]),
-    .pool_kernel_x                  (pool_kernel_x[5][0]), 
-    .pool_kernel_y                  (pool_kernel_y[5][0]),
-    .pool_stride_x                  (pool_stride_x[5][0]), 
-    .pool_stride_y                  (pool_stride_y[5][0]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][0]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][0]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][0]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][0]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][0]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][0]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][0]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][0]),
-    .merge_in                       (merge_in[5][0]),
-    .gather_in                      (gather_in[5][0]),
-    .merge_out                      (merge_out[5][0]),
-    .gather_out                     (gather_out[5][0]),
-    .cast_out                       (cast_out[5][0])
-)tile_5_0(
+    .x                              (4),
+    .y                              (8),
+    .is_mapped                      (is_mapped[4][8]),
+    .conv_kernel_x                  (conv_kernel_x[4][8]), 
+    .conv_kernel_y                  (conv_kernel_y[4][8]),
+    .conv_stride_x                  (conv_stride_x[4][8]), 
+    .conv_stride_y                  (conv_stride_y[4][8]),
+    .conv_ifsize_x                  (conv_ifsize_x[4][8]), 
+    .conv_ifsize_y                  (conv_ifsize_y[4][8]),
+    .conv_ifpads_u                  (conv_ifpads_u[4][8]), 
+    .conv_ifpads_d                  (conv_ifpads_d[4][8]),
+    .conv_ifpads_l                  (conv_ifpads_l[4][8]), 
+    .conv_ifpads_r                  (conv_ifpads_r[4][8]),
+    .conv_ofsize_x                  (conv_ofsize_x[4][8]), 
+    .conv_ofsize_y                  (conv_ofsize_y[4][8]),
+    .xbar_num_ichan                 (xbar_num_ichan[4][8]),
+    .xbar_num_ochan                 (xbar_num_ochan[4][8]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[4][8]),
+    .has_bias                       (has_bias[4][8]),
+    .has_act                        (has_act[4][8]),
+    .has_pool                       (has_pool[4][8]),
+    .pool_mode                      (pool_mode[4][8]),
+    .pool_kernel_x                  (pool_kernel_x[4][8]), 
+    .pool_kernel_y                  (pool_kernel_y[4][8]),
+    .pool_stride_x                  (pool_stride_x[4][8]), 
+    .pool_stride_y                  (pool_stride_y[4][8]),
+    .pool_ifsize_x                  (pool_ifsize_x[4][8]), 
+    .pool_ifsize_y                  (pool_ifsize_y[4][8]),
+    .pool_ifpads_u                  (pool_ifpads_u[4][8]), 
+    .pool_ifpads_d                  (pool_ifpads_d[4][8]),
+    .pool_ifpads_l                  (pool_ifpads_l[4][8]), 
+    .pool_ifpads_r                  (pool_ifpads_r[4][8]),
+    .pool_ofsize_x                  (pool_ofsize_x[4][8]), 
+    .pool_ofsize_y                  (pool_ofsize_y[4][8]),
+    .merge_in                       (merge_in[4][8]),
+    .gather_in                      (gather_in[4][8]),
+    .merge_out                      (merge_out[4][8]),
+    .gather_out                     (gather_out[4][8]),
+    .cast_out                       (cast_out[4][8])
+)tile_4_8(
     .clk_nw                         (clk_nw),
     .clk_bw                         (clk_bw),
     .clk_br                         (clk_br),
@@ -3287,75 +3922,75 @@ tile #(
     .rstn_pc                        (rstn_pc), 
 
     // cast in
-    .cast_data_i                    (cast_data_n2t[5][0]),
-    .cast_valid_i                   (cast_valid_n2t[5][0]),
-    .cast_ready_o                   (cast_ready_t2n[5][0]),
+    .cast_data_i                    (cast_data_n2t[4][8]),
+    .cast_valid_i                   (cast_valid_n2t[4][8]),
+    .cast_ready_o                   (cast_ready_t2n[4][8]),
 
     // merge in
-    .merge_data_i                   (merge_data_n2t[5][0]),
-    .merge_valid_i                  (merge_valid_n2t[5][0]),
-    .merge_ready_o                  (merge_ready_t2n[5][0]),
+    .merge_data_i                   (merge_data_n2t[4][8]),
+    .merge_valid_i                  (merge_valid_n2t[4][8]),
+    .merge_ready_o                  (merge_ready_t2n[4][8]),
 
     // gather in 
-    .gather_data_i                  (gather_data_n2t[5][0]),
-    .gather_valid_i                 (gather_valid_n2t[5][0]),
-    .gather_ready_o                 (gather_ready_t2n[5][0]),
+    .gather_data_i                  (gather_data_n2t[4][8]),
+    .gather_valid_i                 (gather_valid_n2t[4][8]),
+    .gather_ready_o                 (gather_ready_t2n[4][8]),
 
     // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][0]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][0]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][0]),
+    .cast_gather_data_o             (cast_gather_data_t2n[4][8]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[4][8]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[4][8]),
 
     // merge out
-    .merge_data_o                   (merge_data_t2n[5][0]),
-    .merge_valid_o                  (merge_valid_t2n[5][0]),
-    .merge_ready_i                  (merge_ready_n2t[5][0]),
+    .merge_data_o                   (merge_data_t2n[4][8]),
+    .merge_valid_o                  (merge_valid_t2n[4][8]),
+    .merge_ready_i                  (merge_ready_n2t[4][8]),
 
-    .frame_done                     (tile_done[5][0])
+    .frame_done                     (tile_done[4][8])
 );
 
 
 tile #(
-    .x                              (5),
-    .y                              (1),
-    .is_mapped                      (is_mapped[5][1]),
-    .conv_kernel_x                  (conv_kernel_x[5][1]), 
-    .conv_kernel_y                  (conv_kernel_y[5][1]),
-    .conv_stride_x                  (conv_stride_x[5][1]), 
-    .conv_stride_y                  (conv_stride_y[5][1]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][1]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][1]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][1]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][1]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][1]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][1]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][1]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][1]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][1]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][1]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][1]),
-    .has_bias                       (has_bias[5][1]),
-    .has_act                        (has_act[5][1]),
-    .has_pool                       (has_pool[5][1]),
-    .pool_mode                      (pool_mode[5][1]),
-    .pool_kernel_x                  (pool_kernel_x[5][1]), 
-    .pool_kernel_y                  (pool_kernel_y[5][1]),
-    .pool_stride_x                  (pool_stride_x[5][1]), 
-    .pool_stride_y                  (pool_stride_y[5][1]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][1]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][1]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][1]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][1]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][1]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][1]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][1]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][1]),
-    .merge_in                       (merge_in[5][1]),
-    .gather_in                      (gather_in[5][1]),
-    .merge_out                      (merge_out[5][1]),
-    .gather_out                     (gather_out[5][1]),
-    .cast_out                       (cast_out[5][1])
-)tile_5_1(
+    .x                              (4),
+    .y                              (9),
+    .is_mapped                      (is_mapped[4][9]),
+    .conv_kernel_x                  (conv_kernel_x[4][9]), 
+    .conv_kernel_y                  (conv_kernel_y[4][9]),
+    .conv_stride_x                  (conv_stride_x[4][9]), 
+    .conv_stride_y                  (conv_stride_y[4][9]),
+    .conv_ifsize_x                  (conv_ifsize_x[4][9]), 
+    .conv_ifsize_y                  (conv_ifsize_y[4][9]),
+    .conv_ifpads_u                  (conv_ifpads_u[4][9]), 
+    .conv_ifpads_d                  (conv_ifpads_d[4][9]),
+    .conv_ifpads_l                  (conv_ifpads_l[4][9]), 
+    .conv_ifpads_r                  (conv_ifpads_r[4][9]),
+    .conv_ofsize_x                  (conv_ofsize_x[4][9]), 
+    .conv_ofsize_y                  (conv_ofsize_y[4][9]),
+    .xbar_num_ichan                 (xbar_num_ichan[4][9]),
+    .xbar_num_ochan                 (xbar_num_ochan[4][9]),
+    .xbar_adc_trans_delay           (xbar_adc_trans_delay[4][9]),
+    .has_bias                       (has_bias[4][9]),
+    .has_act                        (has_act[4][9]),
+    .has_pool                       (has_pool[4][9]),
+    .pool_mode                      (pool_mode[4][9]),
+    .pool_kernel_x                  (pool_kernel_x[4][9]), 
+    .pool_kernel_y                  (pool_kernel_y[4][9]),
+    .pool_stride_x                  (pool_stride_x[4][9]), 
+    .pool_stride_y                  (pool_stride_y[4][9]),
+    .pool_ifsize_x                  (pool_ifsize_x[4][9]), 
+    .pool_ifsize_y                  (pool_ifsize_y[4][9]),
+    .pool_ifpads_u                  (pool_ifpads_u[4][9]), 
+    .pool_ifpads_d                  (pool_ifpads_d[4][9]),
+    .pool_ifpads_l                  (pool_ifpads_l[4][9]), 
+    .pool_ifpads_r                  (pool_ifpads_r[4][9]),
+    .pool_ofsize_x                  (pool_ofsize_x[4][9]), 
+    .pool_ofsize_y                  (pool_ofsize_y[4][9]),
+    .merge_in                       (merge_in[4][9]),
+    .gather_in                      (gather_in[4][9]),
+    .merge_out                      (merge_out[4][9]),
+    .gather_out                     (gather_out[4][9]),
+    .cast_out                       (cast_out[4][9])
+)tile_4_9(
     .clk_nw                         (clk_nw),
     .clk_bw                         (clk_bw),
     .clk_br                         (clk_br),
@@ -3366,508 +4001,31 @@ tile #(
     .rstn_pc                        (rstn_pc), 
 
     // cast in
-    .cast_data_i                    (cast_data_n2t[5][1]),
-    .cast_valid_i                   (cast_valid_n2t[5][1]),
-    .cast_ready_o                   (cast_ready_t2n[5][1]),
+    .cast_data_i                    (cast_data_n2t[4][9]),
+    .cast_valid_i                   (cast_valid_n2t[4][9]),
+    .cast_ready_o                   (cast_ready_t2n[4][9]),
 
     // merge in
-    .merge_data_i                   (merge_data_n2t[5][1]),
-    .merge_valid_i                  (merge_valid_n2t[5][1]),
-    .merge_ready_o                  (merge_ready_t2n[5][1]),
+    .merge_data_i                   (merge_data_n2t[4][9]),
+    .merge_valid_i                  (merge_valid_n2t[4][9]),
+    .merge_ready_o                  (merge_ready_t2n[4][9]),
 
     // gather in 
-    .gather_data_i                  (gather_data_n2t[5][1]),
-    .gather_valid_i                 (gather_valid_n2t[5][1]),
-    .gather_ready_o                 (gather_ready_t2n[5][1]),
+    .gather_data_i                  (gather_data_n2t[4][9]),
+    .gather_valid_i                 (gather_valid_n2t[4][9]),
+    .gather_ready_o                 (gather_ready_t2n[4][9]),
 
     // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][1]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][1]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][1]),
+    .cast_gather_data_o             (cast_gather_data_t2n[4][9]),
+    .cast_gather_valid_o            (cast_gather_valid_t2n[4][9]),   
+    .cast_gather_ready_i            (cast_gather_ready_n2t[4][9]),
 
     // merge out
-    .merge_data_o                   (merge_data_t2n[5][1]),
-    .merge_valid_o                  (merge_valid_t2n[5][1]),
-    .merge_ready_i                  (merge_ready_n2t[5][1]),
+    .merge_data_o                   (merge_data_t2n[4][9]),
+    .merge_valid_o                  (merge_valid_t2n[4][9]),
+    .merge_ready_i                  (merge_ready_n2t[4][9]),
 
-    .frame_done                     (tile_done[5][1])
-);
-
-
-tile #(
-    .x                              (5),
-    .y                              (2),
-    .is_mapped                      (is_mapped[5][2]),
-    .conv_kernel_x                  (conv_kernel_x[5][2]), 
-    .conv_kernel_y                  (conv_kernel_y[5][2]),
-    .conv_stride_x                  (conv_stride_x[5][2]), 
-    .conv_stride_y                  (conv_stride_y[5][2]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][2]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][2]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][2]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][2]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][2]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][2]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][2]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][2]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][2]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][2]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][2]),
-    .has_bias                       (has_bias[5][2]),
-    .has_act                        (has_act[5][2]),
-    .has_pool                       (has_pool[5][2]),
-    .pool_mode                      (pool_mode[5][2]),
-    .pool_kernel_x                  (pool_kernel_x[5][2]), 
-    .pool_kernel_y                  (pool_kernel_y[5][2]),
-    .pool_stride_x                  (pool_stride_x[5][2]), 
-    .pool_stride_y                  (pool_stride_y[5][2]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][2]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][2]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][2]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][2]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][2]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][2]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][2]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][2]),
-    .merge_in                       (merge_in[5][2]),
-    .gather_in                      (gather_in[5][2]),
-    .merge_out                      (merge_out[5][2]),
-    .gather_out                     (gather_out[5][2]),
-    .cast_out                       (cast_out[5][2])
-)tile_5_2(
-    .clk_nw                         (clk_nw),
-    .clk_bw                         (clk_bw),
-    .clk_br                         (clk_br),
-    .clk_pc                         (clk_pc),
-    .rstn_nw                        (rstn_nw), 
-    .rstn_bw                        (rstn_bw), 
-    .rstn_br                        (rstn_br), 
-    .rstn_pc                        (rstn_pc), 
-
-    // cast in
-    .cast_data_i                    (cast_data_n2t[5][2]),
-    .cast_valid_i                   (cast_valid_n2t[5][2]),
-    .cast_ready_o                   (cast_ready_t2n[5][2]),
-
-    // merge in
-    .merge_data_i                   (merge_data_n2t[5][2]),
-    .merge_valid_i                  (merge_valid_n2t[5][2]),
-    .merge_ready_o                  (merge_ready_t2n[5][2]),
-
-    // gather in 
-    .gather_data_i                  (gather_data_n2t[5][2]),
-    .gather_valid_i                 (gather_valid_n2t[5][2]),
-    .gather_ready_o                 (gather_ready_t2n[5][2]),
-
-    // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][2]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][2]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][2]),
-
-    // merge out
-    .merge_data_o                   (merge_data_t2n[5][2]),
-    .merge_valid_o                  (merge_valid_t2n[5][2]),
-    .merge_ready_i                  (merge_ready_n2t[5][2]),
-
-    .frame_done                     (tile_done[5][2])
-);
-
-
-tile #(
-    .x                              (5),
-    .y                              (3),
-    .is_mapped                      (is_mapped[5][3]),
-    .conv_kernel_x                  (conv_kernel_x[5][3]), 
-    .conv_kernel_y                  (conv_kernel_y[5][3]),
-    .conv_stride_x                  (conv_stride_x[5][3]), 
-    .conv_stride_y                  (conv_stride_y[5][3]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][3]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][3]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][3]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][3]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][3]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][3]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][3]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][3]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][3]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][3]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][3]),
-    .has_bias                       (has_bias[5][3]),
-    .has_act                        (has_act[5][3]),
-    .has_pool                       (has_pool[5][3]),
-    .pool_mode                      (pool_mode[5][3]),
-    .pool_kernel_x                  (pool_kernel_x[5][3]), 
-    .pool_kernel_y                  (pool_kernel_y[5][3]),
-    .pool_stride_x                  (pool_stride_x[5][3]), 
-    .pool_stride_y                  (pool_stride_y[5][3]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][3]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][3]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][3]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][3]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][3]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][3]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][3]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][3]),
-    .merge_in                       (merge_in[5][3]),
-    .gather_in                      (gather_in[5][3]),
-    .merge_out                      (merge_out[5][3]),
-    .gather_out                     (gather_out[5][3]),
-    .cast_out                       (cast_out[5][3])
-)tile_5_3(
-    .clk_nw                         (clk_nw),
-    .clk_bw                         (clk_bw),
-    .clk_br                         (clk_br),
-    .clk_pc                         (clk_pc),
-    .rstn_nw                        (rstn_nw), 
-    .rstn_bw                        (rstn_bw), 
-    .rstn_br                        (rstn_br), 
-    .rstn_pc                        (rstn_pc), 
-
-    // cast in
-    .cast_data_i                    (cast_data_n2t[5][3]),
-    .cast_valid_i                   (cast_valid_n2t[5][3]),
-    .cast_ready_o                   (cast_ready_t2n[5][3]),
-
-    // merge in
-    .merge_data_i                   (merge_data_n2t[5][3]),
-    .merge_valid_i                  (merge_valid_n2t[5][3]),
-    .merge_ready_o                  (merge_ready_t2n[5][3]),
-
-    // gather in 
-    .gather_data_i                  (gather_data_n2t[5][3]),
-    .gather_valid_i                 (gather_valid_n2t[5][3]),
-    .gather_ready_o                 (gather_ready_t2n[5][3]),
-
-    // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][3]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][3]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][3]),
-
-    // merge out
-    .merge_data_o                   (merge_data_t2n[5][3]),
-    .merge_valid_o                  (merge_valid_t2n[5][3]),
-    .merge_ready_i                  (merge_ready_n2t[5][3]),
-
-    .frame_done                     (tile_done[5][3])
-);
-
-
-tile #(
-    .x                              (5),
-    .y                              (4),
-    .is_mapped                      (is_mapped[5][4]),
-    .conv_kernel_x                  (conv_kernel_x[5][4]), 
-    .conv_kernel_y                  (conv_kernel_y[5][4]),
-    .conv_stride_x                  (conv_stride_x[5][4]), 
-    .conv_stride_y                  (conv_stride_y[5][4]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][4]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][4]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][4]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][4]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][4]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][4]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][4]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][4]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][4]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][4]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][4]),
-    .has_bias                       (has_bias[5][4]),
-    .has_act                        (has_act[5][4]),
-    .has_pool                       (has_pool[5][4]),
-    .pool_mode                      (pool_mode[5][4]),
-    .pool_kernel_x                  (pool_kernel_x[5][4]), 
-    .pool_kernel_y                  (pool_kernel_y[5][4]),
-    .pool_stride_x                  (pool_stride_x[5][4]), 
-    .pool_stride_y                  (pool_stride_y[5][4]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][4]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][4]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][4]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][4]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][4]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][4]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][4]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][4]),
-    .merge_in                       (merge_in[5][4]),
-    .gather_in                      (gather_in[5][4]),
-    .merge_out                      (merge_out[5][4]),
-    .gather_out                     (gather_out[5][4]),
-    .cast_out                       (cast_out[5][4])
-)tile_5_4(
-    .clk_nw                         (clk_nw),
-    .clk_bw                         (clk_bw),
-    .clk_br                         (clk_br),
-    .clk_pc                         (clk_pc),
-    .rstn_nw                        (rstn_nw), 
-    .rstn_bw                        (rstn_bw), 
-    .rstn_br                        (rstn_br), 
-    .rstn_pc                        (rstn_pc), 
-
-    // cast in
-    .cast_data_i                    (cast_data_n2t[5][4]),
-    .cast_valid_i                   (cast_valid_n2t[5][4]),
-    .cast_ready_o                   (cast_ready_t2n[5][4]),
-
-    // merge in
-    .merge_data_i                   (merge_data_n2t[5][4]),
-    .merge_valid_i                  (merge_valid_n2t[5][4]),
-    .merge_ready_o                  (merge_ready_t2n[5][4]),
-
-    // gather in 
-    .gather_data_i                  (gather_data_n2t[5][4]),
-    .gather_valid_i                 (gather_valid_n2t[5][4]),
-    .gather_ready_o                 (gather_ready_t2n[5][4]),
-
-    // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][4]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][4]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][4]),
-
-    // merge out
-    .merge_data_o                   (merge_data_t2n[5][4]),
-    .merge_valid_o                  (merge_valid_t2n[5][4]),
-    .merge_ready_i                  (merge_ready_n2t[5][4]),
-
-    .frame_done                     (tile_done[5][4])
-);
-
-
-tile #(
-    .x                              (5),
-    .y                              (5),
-    .is_mapped                      (is_mapped[5][5]),
-    .conv_kernel_x                  (conv_kernel_x[5][5]), 
-    .conv_kernel_y                  (conv_kernel_y[5][5]),
-    .conv_stride_x                  (conv_stride_x[5][5]), 
-    .conv_stride_y                  (conv_stride_y[5][5]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][5]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][5]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][5]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][5]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][5]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][5]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][5]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][5]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][5]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][5]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][5]),
-    .has_bias                       (has_bias[5][5]),
-    .has_act                        (has_act[5][5]),
-    .has_pool                       (has_pool[5][5]),
-    .pool_mode                      (pool_mode[5][5]),
-    .pool_kernel_x                  (pool_kernel_x[5][5]), 
-    .pool_kernel_y                  (pool_kernel_y[5][5]),
-    .pool_stride_x                  (pool_stride_x[5][5]), 
-    .pool_stride_y                  (pool_stride_y[5][5]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][5]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][5]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][5]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][5]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][5]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][5]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][5]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][5]),
-    .merge_in                       (merge_in[5][5]),
-    .gather_in                      (gather_in[5][5]),
-    .merge_out                      (merge_out[5][5]),
-    .gather_out                     (gather_out[5][5]),
-    .cast_out                       (cast_out[5][5])
-)tile_5_5(
-    .clk_nw                         (clk_nw),
-    .clk_bw                         (clk_bw),
-    .clk_br                         (clk_br),
-    .clk_pc                         (clk_pc),
-    .rstn_nw                        (rstn_nw), 
-    .rstn_bw                        (rstn_bw), 
-    .rstn_br                        (rstn_br), 
-    .rstn_pc                        (rstn_pc), 
-
-    // cast in
-    .cast_data_i                    (cast_data_n2t[5][5]),
-    .cast_valid_i                   (cast_valid_n2t[5][5]),
-    .cast_ready_o                   (cast_ready_t2n[5][5]),
-
-    // merge in
-    .merge_data_i                   (merge_data_n2t[5][5]),
-    .merge_valid_i                  (merge_valid_n2t[5][5]),
-    .merge_ready_o                  (merge_ready_t2n[5][5]),
-
-    // gather in 
-    .gather_data_i                  (gather_data_n2t[5][5]),
-    .gather_valid_i                 (gather_valid_n2t[5][5]),
-    .gather_ready_o                 (gather_ready_t2n[5][5]),
-
-    // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][5]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][5]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][5]),
-
-    // merge out
-    .merge_data_o                   (merge_data_t2n[5][5]),
-    .merge_valid_o                  (merge_valid_t2n[5][5]),
-    .merge_ready_i                  (merge_ready_n2t[5][5]),
-
-    .frame_done                     (tile_done[5][5])
-);
-
-
-tile #(
-    .x                              (5),
-    .y                              (6),
-    .is_mapped                      (is_mapped[5][6]),
-    .conv_kernel_x                  (conv_kernel_x[5][6]), 
-    .conv_kernel_y                  (conv_kernel_y[5][6]),
-    .conv_stride_x                  (conv_stride_x[5][6]), 
-    .conv_stride_y                  (conv_stride_y[5][6]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][6]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][6]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][6]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][6]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][6]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][6]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][6]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][6]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][6]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][6]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][6]),
-    .has_bias                       (has_bias[5][6]),
-    .has_act                        (has_act[5][6]),
-    .has_pool                       (has_pool[5][6]),
-    .pool_mode                      (pool_mode[5][6]),
-    .pool_kernel_x                  (pool_kernel_x[5][6]), 
-    .pool_kernel_y                  (pool_kernel_y[5][6]),
-    .pool_stride_x                  (pool_stride_x[5][6]), 
-    .pool_stride_y                  (pool_stride_y[5][6]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][6]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][6]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][6]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][6]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][6]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][6]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][6]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][6]),
-    .merge_in                       (merge_in[5][6]),
-    .gather_in                      (gather_in[5][6]),
-    .merge_out                      (merge_out[5][6]),
-    .gather_out                     (gather_out[5][6]),
-    .cast_out                       (cast_out[5][6])
-)tile_5_6(
-    .clk_nw                         (clk_nw),
-    .clk_bw                         (clk_bw),
-    .clk_br                         (clk_br),
-    .clk_pc                         (clk_pc),
-    .rstn_nw                        (rstn_nw), 
-    .rstn_bw                        (rstn_bw), 
-    .rstn_br                        (rstn_br), 
-    .rstn_pc                        (rstn_pc), 
-
-    // cast in
-    .cast_data_i                    (cast_data_n2t[5][6]),
-    .cast_valid_i                   (cast_valid_n2t[5][6]),
-    .cast_ready_o                   (cast_ready_t2n[5][6]),
-
-    // merge in
-    .merge_data_i                   (merge_data_n2t[5][6]),
-    .merge_valid_i                  (merge_valid_n2t[5][6]),
-    .merge_ready_o                  (merge_ready_t2n[5][6]),
-
-    // gather in 
-    .gather_data_i                  (gather_data_n2t[5][6]),
-    .gather_valid_i                 (gather_valid_n2t[5][6]),
-    .gather_ready_o                 (gather_ready_t2n[5][6]),
-
-    // cast gather out
-    .cast_gather_data_o             (cast_gather_data_t2n[5][6]),
-    .cast_gather_valid_o            (cast_gather_valid_t2n[5][6]),   
-    .cast_gather_ready_i            (cast_gather_ready_n2t[5][6]),
-
-    // merge out
-    .merge_data_o                   (merge_data_t2n[5][6]),
-    .merge_valid_o                  (merge_valid_t2n[5][6]),
-    .merge_ready_i                  (merge_ready_n2t[5][6]),
-
-    .frame_done                     (tile_done[5][6])
-);
-
-
-assign cast_gather_data_t2n[5][7] = 0;
-assign cast_gather_valid_t2n[5][7] = 0;
-
-tile #(
-    .x                              (5),
-    .y                              (7),
-    .is_mapped                      (is_mapped[5][7]),
-    .conv_kernel_x                  (conv_kernel_x[5][7]), 
-    .conv_kernel_y                  (conv_kernel_y[5][7]),
-    .conv_stride_x                  (conv_stride_x[5][7]), 
-    .conv_stride_y                  (conv_stride_y[5][7]),
-    .conv_ifsize_x                  (conv_ifsize_x[5][7]), 
-    .conv_ifsize_y                  (conv_ifsize_y[5][7]),
-    .conv_ifpads_u                  (conv_ifpads_u[5][7]), 
-    .conv_ifpads_d                  (conv_ifpads_d[5][7]),
-    .conv_ifpads_l                  (conv_ifpads_l[5][7]), 
-    .conv_ifpads_r                  (conv_ifpads_r[5][7]),
-    .conv_ofsize_x                  (conv_ofsize_x[5][7]), 
-    .conv_ofsize_y                  (conv_ofsize_y[5][7]),
-    .xbar_num_ichan                 (xbar_num_ichan[5][7]),
-    .xbar_num_ochan                 (xbar_num_ochan[5][7]),
-    .xbar_adc_trans_delay           (xbar_adc_trans_delay[5][7]),
-    .has_bias                       (has_bias[5][7]),
-    .has_act                        (has_act[5][7]),
-    .has_pool                       (has_pool[5][7]),
-    .pool_mode                      (pool_mode[5][7]),
-    .pool_kernel_x                  (pool_kernel_x[5][7]), 
-    .pool_kernel_y                  (pool_kernel_y[5][7]),
-    .pool_stride_x                  (pool_stride_x[5][7]), 
-    .pool_stride_y                  (pool_stride_y[5][7]),
-    .pool_ifsize_x                  (pool_ifsize_x[5][7]), 
-    .pool_ifsize_y                  (pool_ifsize_y[5][7]),
-    .pool_ifpads_u                  (pool_ifpads_u[5][7]), 
-    .pool_ifpads_d                  (pool_ifpads_d[5][7]),
-    .pool_ifpads_l                  (pool_ifpads_l[5][7]), 
-    .pool_ifpads_r                  (pool_ifpads_r[5][7]),
-    .pool_ofsize_x                  (pool_ofsize_x[5][7]), 
-    .pool_ofsize_y                  (pool_ofsize_y[5][7]),
-    .merge_in                       (merge_in[5][7]),
-    .gather_in                      (gather_in[5][7]),
-    .merge_out                      (merge_out[5][7]),
-    .gather_out                     (gather_out[5][7]),
-    .cast_out                       (cast_out[5][7])
-)tile_5_7(
-    .clk_nw                         (clk_nw),
-    .clk_bw                         (clk_bw),
-    .clk_br                         (clk_br),
-    .clk_pc                         (clk_pc),
-    .rstn_nw                        (rstn_nw), 
-    .rstn_bw                        (rstn_bw), 
-    .rstn_br                        (rstn_br), 
-    .rstn_pc                        (rstn_pc), 
-
-    // cast in
-    .cast_data_i                    (cast_data_n2t[5][7]),
-    .cast_valid_i                   (cast_valid_n2t[5][7]),
-    .cast_ready_o                   (cast_ready_t2n[5][7]),
-
-    // merge in
-    .merge_data_i                   (merge_data_n2t[5][7]),
-    .merge_valid_i                  (merge_valid_n2t[5][7]),
-    .merge_ready_o                  (merge_ready_t2n[5][7]),
-
-    // gather in 
-    .gather_data_i                  (gather_data_n2t[5][7]),
-    .gather_valid_i                 (gather_valid_n2t[5][7]),
-    .gather_ready_o                 (gather_ready_t2n[5][7]),
-
-    // cast gather out
-    .cast_gather_data_o             (data_o_eject[0]),
-    .cast_gather_valid_o            (valid_o_eject[0]),   
-    .cast_gather_ready_i            (ready_i_eject[0]),
-
-    // merge out
-    .merge_data_o                   (merge_data_t2n[5][7]),
-    .merge_valid_o                  (merge_valid_t2n[5][7]),
-    .merge_ready_i                  (merge_ready_n2t[5][7]),
-
-    .frame_done                     (tile_done[5][7])
+    .frame_done                     (tile_done[4][9])
 );
 
 
